@@ -1,9 +1,11 @@
-import { getToken } from 'next-auth/jwt';
-import { NextResponse } from 'next/server';
-import prisma from './lib/prisma';
+// app/middleware.ts
 
-export async function middleware(req) {
-    const token = await getToken({ req });
+import { NextRequest, NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
+import { Token } from './types';
+
+export async function middleware(req: NextRequest): Promise<NextResponse> {
+    const token = (await getToken({ req })) as Token | null;
     const url = req.nextUrl.clone();
 
     // Handle anonymous access to the landing page
@@ -15,14 +17,12 @@ export async function middleware(req) {
         return NextResponse.redirect(url);
     }
 
-    // Fetch user from the database
-    const user = await prisma.user.findUnique({
-        where: { regNumber: token.regNumber },
-        include: { role: true }
-    });
+    // Fetch user from the API route
+    const userRes = await fetch(`${req.nextUrl.origin}/api/getUser?regNumber=${token.regNumber}`);
+    const user = await userRes.json();
 
-    if (!user) {
-        url.pathname = '/auth/signin';
+    if (userRes.status !== 200 || !user) {
+        url.pathname = '/signin';
         return NextResponse.redirect(url);
     }
 
@@ -49,10 +49,7 @@ export async function middleware(req) {
         return NextResponse.rewrite(url);
     }
 
-    if (role.name === 'viewer' && url.pathname !== '/') {
-        url.pathname = '/unauthorized';
-        return NextResponse.rewrite(url);
-    }
+
 
     return NextResponse.next();
 }
