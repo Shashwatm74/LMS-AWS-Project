@@ -22,7 +22,7 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     const user = await userRes.json();
 
     if (userRes.status !== 200 || !user) {
-        url.pathname = '/signin';
+        url.pathname = '/';
         return NextResponse.redirect(url);
     }
 

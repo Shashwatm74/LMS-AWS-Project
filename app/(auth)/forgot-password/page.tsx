@@ -8,24 +8,32 @@ import { Button } from "@/components/ui/button";
 
 export default function ForgotPassword() {
     const [regNumber, setRegNumber] = useState('');
+    const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Here you would send a request to your API to handle sending the reset token
-        const response = await fetch('@/api/auth/forgotpassword', {
+        // Make sure the regNumber and email are provided
+        if (!regNumber || !email) {
+            setMessage('Registration number and email are required.');
+            return;
+        }
+
+        // Send request to the reset password API
+        const response = await fetch('/api/auth/resetpasswordrequest', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ regNumber }),
+            body: JSON.stringify({ regNumber, email }),
         });
 
         if (response.ok) {
-            setMessage('Password reset instructions have been sent to your email.');
+            setMessage('Password has been reset and sent to your email.');
         } else {
-            setMessage('Error: Could not send password reset instructions.');
+            const data = await response.json();
+            setMessage(`Error: ${data.error || 'Could not reset password.'}`);
         }
     };
 
@@ -44,6 +52,16 @@ export default function ForgotPassword() {
                                 type="text"
                                 value={regNumber}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRegNumber(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <Label htmlFor="email">Email</Label>
+                            <Input
+                                id="email"
+                                type="email"
+                                value={email}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                                 required
                             />
                         </div>

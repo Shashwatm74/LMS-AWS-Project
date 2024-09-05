@@ -1,19 +1,29 @@
-// components/Navbar.tsx
 'use client';
 
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 import { cn } from "@/lib/utils";
 
 export default function Navbar() {
+    const { data: session } = useSession();
     const router = useRouter();
 
     const handleSignIn = () => {
-        router.push('/signin');
+        signIn();
+    };
+
+    const handleSignOut = () => {
+        signOut();
+    };
+
+    const goToDashboard = () => {
+        router.push('/dashboard');
     };
 
     return (
-        <nav className="flex justify-between items-center p-4  text-white" style={{ backgroundColor: '#7a0e01', color: 'white' }}>
+        <nav className="flex justify-between items-center p-4 text-white" style={{ backgroundColor: '#7a0e01', color: 'white' }}>
             <div className="flex items-center">
                 <h1 className="text-xl font-bold">FI Institute</h1>
                 <ul className="flex space-x-4 ml-8">
@@ -24,7 +34,24 @@ export default function Navbar() {
                     <li><a href="/founder" className="hover:underline">Founder</a></li>
                 </ul>
             </div>
-            <Button onClick={handleSignIn}>Sign In</Button>
+
+            {session ? (
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button>Menu</Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={goToDashboard}>
+                            Dashboard
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleSignOut}>
+                            Logout
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            ) : (
+                <Button onClick={handleSignIn}>Sign In</Button>
+            )}
         </nav>
     );
 }

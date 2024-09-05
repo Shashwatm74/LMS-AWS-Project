@@ -1,59 +1,66 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '@/lib/prisma';
-import crypto from 'crypto';
-import nodemailer from 'nodemailer';
+// pages/api/auth/resetpasswordrequest.ts
 
-interface ForgotPasswordRequest {
-    regNumber: string;
-}
+import { NextApiRequest, NextApiResponse } from 'next';
+import { randomBytes } from 'crypto';
+import nodemailer from 'nodemailer';
+import bcrypt from 'bcrypt';
+import { prisma } from '@/lib/prisma'; // Adjust according to your Prisma setup
+
+const generateRandomPassword = () => {
+    return randomBytes(4).toString('hex'); // Generates an 8-character password
+};
+
+const hashPassword = async (password: string) => {
+    const salt = await bcrypt.genSalt(10);
+    return bcrypt.hash(password, salt);
+};
+
+const transporter = nodemailer.createTransport({
+    service: 'Gmail', // Use your email service
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
+});
+
+const sendEmail = async (to: string, password: string) => {
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to,
+        subject: 'Your New Password',
+        text: `Your new password is: ${password}`,
+    };
+
+    return transporter.sendMail(mailOptions);
+};
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
-    }
+    if (req.method === 'POST') {
+        const { regNo, email } = req.body;
 
-    const { regNumber }: ForgotPasswordRequest = req.body;
-
-    try {
-        const user = await prisma.user.findUnique({
-            where: { regNumber },
-        });
-
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+        if (!regNo || !email) {
+            return res.status(400).json({ error: 'Registration number and email are required' });
         }
 
-        const resetToken = crypto.randomBytes(32).toString('hex');
-        const resetTokenExpiry = new Date(Date.now() + 360000);
+        const newPassword = generateRandomPassword();
+        const hashedPassword = await hashPassword(newPassword);
 
-        await prisma.user.update({
-            where: { regNumber: user.regNumber },
-            data: {
-                resetToken,
-                resetTokenExpiry,
-            },
-        });
+        try {
+            // Update the user's password in the database
+            await prisma.user.update({
+                where: { regNo },
+                data: { password: hashedPassword }, // Ensure this matches your schema
+            });
 
-        const transporter = nodemailer.createTransport({
-            service: 'Gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-        });
+            // Send the new password via email
+            await sendEmail(email, newPassword);
 
-        const resetUrl = `${process.env.NEXTAUTH_URL}/auth/reset-password?token=${resetToken}`;
-        const mailOptions = {
-            to: `${user.regNumber}@yourdomain.com`,
-            from: 'no-reply@yourdomain.com',
-            subject: 'Password Reset Request',
-            html: `<p>You requested a password reset. Click the link below to reset your password:</p><p><a href="${resetUrl}">${resetUrl}</a></p>`,
-        };
-
-        await transporter.sendMail(mailOptions);
-
-        return res.status(200).json({ message: 'Password reset email sent' });
-    } catch (error) {
-        return res.status(500).json({ error: 'Internal server error' });
+            res.status(200).json({ message: 'Password has been reset and sent to your email' });
+        } catch (error) {
+            res.status(500).json({ error: 'An error occurred' });
+        }
+    } else {
+        res.setHeader('Allow', ['POST']);
+        res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
