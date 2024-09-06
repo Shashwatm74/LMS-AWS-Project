@@ -8,6 +8,7 @@ export interface Role {
 export interface User {
     id: string;
     regNumber: string;
+    email: string;
     password: string;
     roleId: number;
     resetToken: string | null;

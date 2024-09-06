@@ -21,13 +21,15 @@ export default function ForgotPassword() {
         }
 
         // Send request to the reset password API
-        const response = await fetch('/api/auth/resetpasswordrequest', {
+        const response = await fetch('/api/user/forgotpassword', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ regNumber, email }),
+
         });
+
 
         if (response.ok) {
             setMessage('Password has been reset and sent to your email.');

@@ -27,6 +27,7 @@ export default function ChangePassword() {
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const router = useRouter();
+
     const handleBack = () => {
         router.push('/dashboard');
     }

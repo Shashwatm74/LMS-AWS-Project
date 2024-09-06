@@ -21,10 +21,10 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     const userRes = await fetch(`${req.nextUrl.origin}/api/getUser?regNumber=${token.regNumber}`);
     const user = await userRes.json();
 
-    if (userRes.status !== 200 || !user) {
-        url.pathname = '/';
-        return NextResponse.redirect(url);
-    }
+    // if (userRes.status !== 200 || !user) {
+    //     url.pathname = '/';
+    //     return NextResponse.redirect(url);
+    // }
 
     const { role } = user;
 

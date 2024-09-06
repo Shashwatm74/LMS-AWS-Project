@@ -1,28 +1,25 @@
-// pages/api/auth/resetpasswordrequest.ts
-
 import { NextApiRequest, NextApiResponse } from 'next';
 import { randomBytes } from 'crypto';
 import nodemailer from 'nodemailer';
-import bcrypt from 'bcrypt';
-import { prisma } from '@/lib/prisma'; // Adjust according to your Prisma setup
+import bcrypt from 'bcryptjs';
+import { prisma } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
 
-const generateRandomPassword = () => {
-    return randomBytes(4).toString('hex'); // Generates an 8-character password
+// Function to generate a random 8-character password
+const generateRandomPassword = (): string => {
+    return randomBytes(4).toString('hex');  // Generates 8 random characters
 };
 
-const hashPassword = async (password: string) => {
-    const salt = await bcrypt.genSalt(10);
-    return bcrypt.hash(password, salt);
-};
-
+// Nodemailer transporter configuration
 const transporter = nodemailer.createTransport({
-    service: 'Gmail', // Use your email service
+    service: 'gmail',  // Correct capitalization
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
     },
 });
 
+// Function to send an email with the new password
 const sendEmail = async (to: string, password: string) => {
     const mailOptions = {
         from: process.env.EMAIL_USER,
@@ -31,36 +28,50 @@ const sendEmail = async (to: string, password: string) => {
         text: `Your new password is: ${password}`,
     };
 
-    return transporter.sendMail(mailOptions);
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log(`Email sent to: ${to}`);
+    } catch (error) {
+        console.error('Error sending email:', error);
+        throw new Error('Failed to send email');
+    }
 };
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method === 'POST') {
-        const { regNo, email } = req.body;
+// API route handler
+export async function POST(request: Request) {
+    try {
+        const { regNumber } = await request.json();
 
-        if (!regNo || !email) {
-            return res.status(400).json({ error: 'Registration number and email are required' });
+        if (!regNumber) {
+            return NextResponse.json({ error: 'Registration number required' }, { status: 400 });
         }
 
+        // Fetch user email from database
+        const user = await prisma.user.findUnique({
+            where: { regNumber },
+            select: { email: true },
+        });
+
+        if (!user || !user.email) {
+            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+        }
+
+        // Generate and hash a new password
         const newPassword = generateRandomPassword();
-        const hashedPassword = await hashPassword(newPassword);
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-        try {
-            // Update the user's password in the database
-            await prisma.user.update({
-                where: { regNo },
-                data: { password: hashedPassword }, // Ensure this matches your schema
-            });
+        // Update the user's password in the database
+        await prisma.user.update({
+            where: { regNumber },
+            data: { password: hashedPassword },
+        });
 
-            // Send the new password via email
-            await sendEmail(email, newPassword);
+        // Send the new password via email
+        await sendEmail(user.email, newPassword);
 
-            res.status(200).json({ message: 'Password has been reset and sent to your email' });
-        } catch (error) {
-            res.status(500).json({ error: 'An error occurred' });
-        }
-    } else {
-        res.setHeader('Allow', ['POST']);
-        res.status(405).end(`Method ${req.method} Not Allowed`);
+        return NextResponse.json({ message: 'Password has been sent to your email' }, { status: 200 });
+    } catch (error) {
+        console.error('Server Error:', error);
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
 }
