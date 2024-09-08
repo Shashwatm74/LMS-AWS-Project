@@ -19,8 +19,7 @@ export async function POST(request: Request) {
 
         // Get session to check if the user is authenticated
         const session = await getServerSession(authOptions);
-        // console.log(authOptions);
-        // console.log(session);
+
 
         if (!session || !session.user?.regNumber) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
