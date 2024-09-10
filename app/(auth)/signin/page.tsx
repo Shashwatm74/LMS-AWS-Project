@@ -36,7 +36,7 @@ export default function SignIn() {
                     setErrorMessage('Registration number not found in the database');
                     break;
                 default:
-                    setErrorMessage('Something went wrong. Please try again.');
+                    setErrorMessage('Something went wrong, check your internet connection and try again.');
                     break;
             }
         } else {

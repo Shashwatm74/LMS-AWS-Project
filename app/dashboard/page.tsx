@@ -3,14 +3,15 @@
 import { useSession, signOut } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import Student from './student';
+import Professor from './professor';
+import Admin from './admin';
+import SuperAdmin from './superadmin';
+
 
 export default function DashboardClient() {
     const { data: session, status } = useSession();
     const router = useRouter();
-    const handleChangePassword = () => {
-        router.push('/changepassword');
-    };
 
     useEffect(() => {
         if (status === 'loading') {
@@ -40,15 +41,17 @@ export default function DashboardClient() {
     if (!session) {
         return null; // or handle redirection here if needed
     }
+    if (session.user?.role === 'student') {
+        return <Student />;
+    }
 
-    return (
-        <div>
-            <h1>Welcome, {session.user?.regNumber}</h1>
-            <Button onClick={() => signOut({ redirect: true })}>
-                Sign Out
-            </Button>
-            <Button onClick={() => handleChangePassword()}> Change Password</Button>
-            {/* Render dashboard components here */}
-        </div>
-    );
+    else if (session.user?.role === 'professor') {
+        return <Professor />;
+    }
+    else if (session.user?.role === 'admin') {
+        return <Admin />
+    }
+    else if (session.user?.role === 'superadmin') {
+        return <SuperAdmin />
+    }
 }

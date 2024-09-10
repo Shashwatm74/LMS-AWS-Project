@@ -7,7 +7,7 @@ const config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-	],
+  ],
   prefix: "",
   theme: {
     container: {
@@ -18,6 +18,12 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        cinzel: ['Cinzel', 'serif'],
+        roboto: ['Roboto', 'sans-serif'],
+
+      },
+
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -52,6 +58,10 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        barn_red: "#790E01",
+        cream: "#E9E8DC",
+        ivory: "#F3F2ED",
+        charcoal: "#302D2E",
       },
       borderRadius: {
         lg: "var(--radius)",

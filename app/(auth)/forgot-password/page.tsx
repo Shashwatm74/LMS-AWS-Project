@@ -45,10 +45,6 @@ export default function ForgotPassword() {
         return () => clearInterval(interval);
     }, [timer, showResetButton, router]);
 
-    const handleBackToSignIn: React.MouseEventHandler<HTMLButtonElement> = () => {
-        router.push('/signin');
-    };
-
     const handleRequestOtp = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true); // Set loading to true

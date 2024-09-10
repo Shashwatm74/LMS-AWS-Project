@@ -1,33 +1,21 @@
 'use client';
 
 import Footer from "@/components/footer";
-export default function Home() {
+import About from "./(landing page)/about";
+import Nursing from "./(landing page)/nursing";
+import Paramedic from "./(landing page)/paramedic";
+import Founder from "./(landing page)/founder";
+import Home from "./(landing page)/home";
+
+export default function Landing() {
 
   return (
     <>
-
-
-      <section id="home" className="flex min-h-screen flex-col items-center justify-center p-24">
-        <h1 className="text-4xl font-bold">Welcome to FI Institute</h1>
-        <p className="mt-4 text-xl">Explore our courses and learn more about us.</p>
-      </section>
-
-      <section id="about" className="min-h-screen p-24">
-        <h1 className="text-4xl font-bold">About Us</h1>
-        <p className="mt-4 text-lg">Learn more about our mission and values.</p>
-      </section>
-      <section id="nursing" className="min-h-screen p-24">
-        <h1 className="text-4xl font-bold">Nursing Course</h1>
-        <p className="mt-4 text-lg">Details about the Nursing course offered by us.</p>
-      </section>
-      <section id="paramedic" className="min-h-screen p-24">
-        <h1 className="text-4xl font-bold">Paramedic Course</h1>
-        <p className="mt-4 text-lg">Details about the Paramedic course offered by us.</p>
-      </section>
-      <section id="founder" className="min-h-screen p-24">
-        <h1 className="text-4xl font-bold">Our Founder</h1>
-        <p className="mt-4 text-lg">Meet the visionary behind our institution.</p>
-      </section>
+      <Home />
+      <About />
+      <Nursing />
+      <Paramedic />
+      <Founder />
       <Footer />
     </>
   );
