@@ -14,10 +14,10 @@ const Student: React.FC = () => {
         return null
     }
     return (
-        <>
+        <section className='mt-24'>
             <h1>Welcome, {session?.user?.regNumber}</h1>
             <Button onClick={() => handleChangePassword()}> Change Password</Button>
-        </>
+        </section>
     )
 }
 export default Student;
