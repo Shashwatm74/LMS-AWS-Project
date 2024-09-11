@@ -1,18 +1,28 @@
 'use client';
 
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
-import WhiteLogo from '@/public/images/whitelogo.svg'
-import DownArrow from '@/public/images/downarrow.svg'
+import WhiteLogo from '@/public/images/whitelogo.svg';
+import DownArrow from '@/public/images/downarrow.svg';
 import { useState, useEffect } from 'react';
 
 export default function Navbar() {
     const { data: session } = useSession();
     const router = useRouter();
     const [isSmallScreen, setIsSmallScreen] = useState(false);
+    const [isSession, setSession] = useState(false);
+
+    // Use useEffect to set session state based on 'session'
+    useEffect(() => {
+        if (session) {
+            setSession(true);
+        } else {
+            setSession(false);
+        }
+    }, [session]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -47,7 +57,7 @@ export default function Navbar() {
                 <div className="flex items-center pr-6 py-0">
                     {isSmallScreen ? (
                         <DropdownMenu modal={false}>
-                            <DropdownMenuTrigger asChild >
+                            <DropdownMenuTrigger asChild>
                                 <div className="flex flex-col gap-1 hover:cursor-pointer">
                                     <div className="bg-white h-1 w-6"></div>
                                     <div className="bg-white h-1 w-6"></div>
@@ -70,7 +80,7 @@ export default function Navbar() {
                                 <DropdownMenuItem>
                                     <a href="/#founder" className="w-full">GALLERY</a>
                                 </DropdownMenuItem>
-                                {session ? (
+                                {isSession ? (
                                     <>
                                         <DropdownMenuItem onSelect={goToDashboard}>
                                             Dashboard
@@ -88,14 +98,13 @@ export default function Navbar() {
                         </DropdownMenu>
                     ) : (
                         <ul className="flex space-x-2 gap-2 ml-8">
-                            <li>
-                                {/* <a href="/#home" className="hover:underline "> */}
+                            <li className="mt-1">
                                 <DropdownMenu modal={false}>
                                     <DropdownMenuTrigger className="gap-2 flex hover:cursor-pointer hover:underline items-center focus:outline-none">
                                         WHO WE ARE <Image src={DownArrow} alt="down-arrow" width={12} />
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent className="w-screen mt-4" >
-                                        <div className="max-w-screen-xl mx-auto px-4 py-6 ">
+                                    <DropdownMenuContent className="w-screen mt-4">
+                                        <div className="max-w-screen-xl mx-auto px-4 py-6">
                                             <div className="grid grid-cols-3 gap-8">
                                                 <DropdownMenuItem className="focus:bg-transparent">
                                                     <h3 className="font-bold mb-2">Column 1</h3>
@@ -122,34 +131,38 @@ export default function Navbar() {
                                         </div>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
-                                {/* </a> */}
                             </li>
-                            <li>
+                            <li className="mt-1">
                                 <a href="/#about" className="hover:underline gap-2 flex">
                                     COURSES <Image src={DownArrow} alt="down-arrow" width={12} />
                                 </a>
                             </li>
-                            <li>
+                            <li className="mt-1">
                                 <a href="/#nursing" className="hover:underline gap-2 flex">
                                     ADMISSION <Image src={DownArrow} alt="down-arrow" width={12} />
                                 </a>
                             </li>
-                            <li>
+                            <li className="mt-1">
                                 <a href="/#paramedic" className="hover:underline gap-2 flex">
                                     FACILITIES <Image src={DownArrow} alt="down-arrow" width={12} />
                                 </a>
                             </li>
-                            <li>
+                            <li className="mt-1">
                                 <a href="/#founder" className="hover:underline gap-2 flex">
                                     GALLERY <Image src={DownArrow} alt="down-arrow" width={12} />
                                 </a>
                             </li>
-                            {session ? (
-                                <DropdownMenu>
+                            {isSession ? (
+                                <DropdownMenu modal={false}>
                                     <DropdownMenuTrigger asChild>
-                                        <Button>Menu</Button>
+                                        <Avatar className="w-8 h-8 cursor-pointer rounded-full">
+                                            <AvatarImage src="/path/to/profile-image.jpg" alt="Profile" />
+                                            <AvatarFallback className="bg-barn_red text-white rounded-full border-2 border-white">
+                                                {session?.user?.role[0].toUpperCase()}
+                                            </AvatarFallback>
+                                        </Avatar>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
+                                    <DropdownMenuContent align="end" className="mt-3 w-40">
                                         <DropdownMenuItem onClick={goToDashboard}>
                                             Dashboard
                                         </DropdownMenuItem>

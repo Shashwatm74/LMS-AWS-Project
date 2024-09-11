@@ -73,9 +73,9 @@ export default function ChangePassword() {
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <Card className="w-96">
+            <Card className="w-80 md:w-96 rounded-none">
                 <CardHeader>
-                    <h1 className="text-xl font-semibold text-center">Change Password</h1>
+                    <h1 className="text-xl font-semibold text-center text-barn_red">CHANGE PASSWORD</h1>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleChangePassword}>
@@ -83,6 +83,7 @@ export default function ChangePassword() {
                         <div className="mb-4">
                             <Label htmlFor="regNo">Registration Number</Label>
                             <Input
+                                className='rounded-none'
                                 id="regNo"
                                 type="text"
                                 value={regNo}
@@ -96,6 +97,7 @@ export default function ChangePassword() {
                         <div className="mb-4 relative">
                             <Label htmlFor="currentPassword">Current Password</Label>
                             <Input
+                                className='rounded-none'
                                 id="currentPassword"
                                 type={showCurrentPassword ? 'text' : 'password'}
                                 value={currentPassword}
@@ -115,6 +117,7 @@ export default function ChangePassword() {
                         <div className="mb-4 relative">
                             <Label htmlFor="newPassword">New Password</Label>
                             <Input
+                                className='rounded-none'
                                 id="newPassword"
                                 type={showNewPassword ? 'text' : 'password'}
                                 value={newPassword}
@@ -134,6 +137,7 @@ export default function ChangePassword() {
                         <div className="mb-4 relative">
                             <Label htmlFor="confirmPassword">Confirm New Password</Label>
                             <Input
+                                className='rounded-none'
                                 id="confirmPassword"
                                 type={showConfirmPassword ? 'text' : 'password'}
                                 value={confirmPassword}
@@ -157,8 +161,8 @@ export default function ChangePassword() {
                         {/* Submit button */}
                         <div className='flex gap-1'>
 
-                            <Button type="submit">Change Password</Button>
-                            <Button onClick={() => handleBack()}>Back</Button>
+                            <Button type="submit" className="w-full mb-4 rounded-none bg-barn_red hover:bg-red-900">Change Password</Button>
+                            <Button onClick={() => handleBack()} className="w-full mb-4 rounded-none bg-barn_red hover:bg-red-900">Back</Button>
                         </div>
                     </form>
                 </CardContent>

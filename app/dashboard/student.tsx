@@ -16,7 +16,7 @@ const Student: React.FC = () => {
     return (
         <section className='mt-24'>
             <h1>Welcome, {session?.user?.regNumber}</h1>
-            <Button onClick={() => handleChangePassword()}> Change Password</Button>
+            <Button onClick={() => handleChangePassword()} className='rounded-none bg-barn_red hover:bg-red-900'> Change Password</Button>
         </section>
     )
 }

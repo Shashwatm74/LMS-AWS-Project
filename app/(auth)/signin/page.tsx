@@ -46,15 +46,16 @@ export default function SignIn() {
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <Card className="w-96">
+            <Card className="w-80 md:w-96 rounded-none">
                 <CardHeader>
-                    <h1 className="text-xl font-semibold text-center">Sign In</h1>
+                    <h1 className="text-xl font-semibold text-center text-barn_red">SIGN IN</h1>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
                             <Label htmlFor="regNumber">Registration Number</Label>
                             <Input
+                                className='rounded-none'
                                 id="regNumber"
                                 type="text"
                                 value={regNumber}
@@ -65,6 +66,7 @@ export default function SignIn() {
                         <div className="mb-4">
                             <Label htmlFor="password">Password</Label>
                             <Input
+                                className='rounded-none'
                                 id="password"
                                 type={showPassword ? 'text' : 'password'}
                                 value={password}
@@ -85,11 +87,11 @@ export default function SignIn() {
                         {errorMessage && (
                             <p className="text-red-500 text-center mb-4">{errorMessage}</p>
                         )}
-                        <Button type="submit" className="w-full mb-4">
+                        <Button type="submit" className="w-full mb-4 rounded-none bg-barn_red hover:bg-red-900">
                             Sign In
                         </Button>
                         <div className="text-center">
-                            <Link href="/forgot-password" className="text-blue-500 hover:underline">
+                            <Link href="/forgot-password" className="text-barn_red hover:underline ">
                                 Forgot Password?
                             </Link>
                         </div>
