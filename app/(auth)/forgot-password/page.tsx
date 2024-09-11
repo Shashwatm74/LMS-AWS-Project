@@ -49,7 +49,7 @@ export default function ForgotPassword() {
         e.preventDefault();
         setLoading(true); // Set loading to true
 
-        if (!regNumber || !email) {
+        if (!regNumber) {
             setMessage('Registration number and email are required.');
             setLoading(false); // Set loading to false
             return;
@@ -147,7 +147,7 @@ export default function ForgotPassword() {
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <Card className="w-96">
+            <Card className="w-80 md:w-96 rounded-none">
                 <CardHeader>
                     <h1 className="text-xl font-semibold text-center">Forgot Password</h1>
                 </CardHeader>
@@ -157,6 +157,7 @@ export default function ForgotPassword() {
                             <div className="mb-4">
                                 <Label htmlFor="regNumber">Registration Number</Label>
                                 <Input
+                                    className="rounded-none"
                                     id="regNumber"
                                     type="text"
                                     value={regNumber}
@@ -164,20 +165,11 @@ export default function ForgotPassword() {
                                     required
                                 />
                             </div>
-                            <div className="mb-4">
-                                <Label htmlFor="email">Email</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    value={email}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                                    required
-                                />
-                            </div>
+
                             {message && (
                                 <p className={`text-center mb-4 ${message.includes('Error') ? 'text-red-500' : 'text-green-500'}`}>{message}</p>
                             )}
-                            <Button type="submit" className="w-full relative" disabled={loading}>
+                            <Button type="submit" className="w-full relative rounded-none bg-barn_red hover:bg-red-900" disabled={loading}>
                                 {loading && <Spinner />}
                                 {loading ? ' Processing...' : 'Send OTP'}
                             </Button>
@@ -189,6 +181,7 @@ export default function ForgotPassword() {
                             <div className="mb-4">
                                 <Label htmlFor="otp">OTP</Label>
                                 <Input
+                                    className="rounded-none"
                                     id="otp"
                                     type="text"
                                     value={otp}
@@ -199,7 +192,7 @@ export default function ForgotPassword() {
                             {message && (
                                 <p className={`text-center mb-4 ${message.includes('Error') ? 'text-red-500' : 'text-green-500'}`}>{message}</p>
                             )}
-                            <Button type="submit" className="w-full relative" disabled={loading}>
+                            <Button type="submit" className="w-full relative rounded-none bg-barn_red hover:bg-red-900" disabled={loading}>
                                 {loading && <Spinner />}
                                 {loading ? ' Processing...' : 'Verify OTP'}
                             </Button>
@@ -212,6 +205,7 @@ export default function ForgotPassword() {
                                 <Label htmlFor="newPassword">New Password</Label>
                                 <div className="relative">
                                     <Input
+                                        className="rounded-none"
                                         id="newPassword"
                                         type={passwordVisible ? 'text' : 'password'}
                                         value={newPassword}
@@ -231,6 +225,7 @@ export default function ForgotPassword() {
                                 <Label htmlFor="confirmPassword">Confirm Password</Label>
                                 <div className="relative">
                                     <Input
+                                        className="rounded-none"
                                         id="confirmPassword"
                                         type={confirmPasswordVisible ? 'text' : 'password'}
                                         value={confirmPassword}
@@ -250,7 +245,7 @@ export default function ForgotPassword() {
                                 <p className={`text-center mb-4 ${message.includes('Error') ? 'text-red-500' : 'text-green-500'}`}>{message}</p>
                             )}
                             {showResetButton && (
-                                <Button type="submit" className="w-full relative" disabled={loading}>
+                                <Button type="submit" className="w-full relative rounded-none bg-barn_red hover:bg-red-900" disabled={loading}>
                                     {loading && <Spinner />}
                                     {loading ? ' Processing...' : 'Reset Password'}
                                 </Button>
