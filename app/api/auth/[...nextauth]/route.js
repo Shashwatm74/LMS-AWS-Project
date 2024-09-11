@@ -68,3 +68,7 @@ export async function POST(req, res) {
 export async function GET(req, res) {
     return NextAuth(req, res, authOptions);
 }
+// Export the NextAuth handler function
+export default async function handler(req, res) {
+    return NextAuth(req, res, authOptions);
+}
