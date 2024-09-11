@@ -1,7 +1,7 @@
 import { randomBytes } from 'crypto';
 import { google } from 'googleapis';
 import nodemailer from 'nodemailer';
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
 // OAuth2 configuration for Gmail
