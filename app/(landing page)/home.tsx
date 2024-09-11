@@ -4,7 +4,7 @@ import hometxt from "@/public/images/hometext.svg"
 import { Button } from "@/components/ui/button";
 const Home: React.FC = () => {
     return (
-        <section id="home" className="flex min-h-screen flex-col items-center px-12 py-10">
+        <section id="home" className="flex min-h-fit flex-col items-center px-12 py-12">
             <Image src='' alt='landing image' className="h-96  w-11/12 max-w-screen-2xl  mb-10 " />
             <div className="font-cinzel flex flex-col gap-2 p-0 max-w-screen-2xl text-xl items-center text-center">
                 <h4 className="text-barn_red font-normal size-5 w-80 font-roboto">WELCOME TO</h4>

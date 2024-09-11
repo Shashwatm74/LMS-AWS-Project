@@ -34,7 +34,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ type, title, duration, qualific
 
 const Nursing: React.FC = () => {
     return (
-        <section id="nursing" className="min-h-screen p-8 md:p-16">
+        <section id="nursing" className="min-h-fit py-12 p-8 md:p-16">
             <h1 className="text-3xl font-bold font-cinzel text-barn_red text-center mb-8">OUR NURSING COURSES</h1>
             <div className="flex flex-col items-center gap-8">
                 <div className="flex flex-wrap justify-center gap-8">

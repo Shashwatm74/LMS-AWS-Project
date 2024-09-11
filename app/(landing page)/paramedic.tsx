@@ -34,7 +34,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ type, title, duration, qualific
 
 const Paramedic: React.FC = () => {
     return (
-        <section id="paramedic" className="min-h-screen p-8 md:p-16 bg-barn_red">
+        <section id="paramedic" className="min-h-fit py-12 p-8 md:p-16 bg-barn_red">
             <h1 className="text-3xl font-bold font-cinzel text-white text-center mb-8">OUR PARAMEDIC COURSES</h1>
             <div className="flex flex-col items-center gap-8">
                 <div className="flex flex-wrap justify-center gap-8">

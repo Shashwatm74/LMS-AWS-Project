@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 const Founder: React.FC = () => {
     return (
-        <section id="founder" className="min-h-screen p-10">
+        <section id="founder" className="min-h-fit px-10 py-12">
             <div className="flex flex-col items-center p-8 gap-10">
                 <h1 className="text-3xl font-bold font-cinzel text-barn_red text-center mb-8">OUR FOUNDER</h1>
                 <Image src='' alt='founder-image' className="w-96 h-96" />
