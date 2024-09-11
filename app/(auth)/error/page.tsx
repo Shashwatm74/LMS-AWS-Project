@@ -3,8 +3,9 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Suspense } from 'react';
 
-export default function ErrorPage() {
+const ErrorPageContent = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
     const error = searchParams.get('error');
@@ -39,5 +40,13 @@ export default function ErrorPage() {
                 </CardContent>
             </Card>
         </div>
+    );
+};
+
+export default function ErrorPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ErrorPageContent />
+        </Suspense>
     );
 }
