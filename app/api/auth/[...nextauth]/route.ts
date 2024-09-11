@@ -15,7 +15,7 @@ interface CustomUser extends User {
     role: string;
 }
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
             name: 'Credentials',
@@ -75,16 +75,5 @@ export const authOptions: NextAuthOptions = {
     }
 };
 
-// Export the POST handler for NextAuth
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
-    return NextAuth(req, res, authOptions);
-}
-
-// Export the GET handler (for session fetching)
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
-    return NextAuth(req, res, authOptions);
-}
-// Export the NextAuth handler function
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    return NextAuth(req, res, authOptions);
-}
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };
