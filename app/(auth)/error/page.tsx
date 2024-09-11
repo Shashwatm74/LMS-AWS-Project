@@ -33,7 +33,7 @@ export default function ErrorPage() {
                 </CardHeader>
                 <CardContent>
                     <p className="text-center mb-4">{errorMessage}</p>
-                    <Button onClick={() => router.push('/auth/signin')}>
+                    <Button onClick={() => router.push('/signin')}>
                         Back to Sign In
                     </Button>
                 </CardContent>

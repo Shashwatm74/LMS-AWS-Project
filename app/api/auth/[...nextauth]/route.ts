@@ -2,8 +2,20 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { NextAuthOptions, Session, User } from 'next-auth';
 
-export const authOptions = {
+interface Credentials {
+    reg_number: string;
+    password: string;
+}
+
+interface CustomUser extends User {
+    regNumber: string;
+    role: string;
+}
+
+export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
             name: 'Credentials',
@@ -11,8 +23,12 @@ export const authOptions = {
                 reg_number: { label: 'Registration Number', type: 'text' },
                 password: { label: 'Password', type: 'password' }
             },
-            async authorize(credentials) {
-                const { reg_number, password } = credentials;
+            async authorize(credentials: Record<string, any> | undefined) {
+                if (!credentials) {
+                    throw new Error('Invalid credentials');
+                }
+
+                const { reg_number, password } = credentials as Credentials;
 
                 // Fetch user from Prisma
                 const user = await prisma.user.findUnique({
@@ -34,18 +50,18 @@ export const authOptions = {
                     id: user.id,
                     regNumber: user.regNumber,
                     role: user.role.name,
-                };
+                } as CustomUser;
             }
         })
     ],
     callbacks: {
-        async session({ session, token }) {
+        async session({ session, token }: { session: Session; token: any }) {
             // Attach role and regNumber to session
             session.user.role = token.role;
             session.user.regNumber = token.regNumber;
             return session;
         },
-        async jwt({ token, user }) {
+        async jwt({ token, user }: { token: any; user: CustomUser | undefined }) {
             if (user) {
                 token.role = user.role;
                 token.regNumber = user.regNumber;
@@ -60,15 +76,15 @@ export const authOptions = {
 };
 
 // Export the POST handler for NextAuth
-export async function POST(req, res) {
+export async function POST(req: NextApiRequest, res: NextApiResponse) {
     return NextAuth(req, res, authOptions);
 }
 
 // Export the GET handler (for session fetching)
-export async function GET(req, res) {
+export async function GET(req: NextApiRequest, res: NextApiResponse) {
     return NextAuth(req, res, authOptions);
 }
 // Export the NextAuth handler function
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     return NextAuth(req, res, authOptions);
 }
