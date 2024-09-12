@@ -3,10 +3,10 @@
 import { useSession, signOut } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Student from './student';
-import Professor from './professor';
 import Admin from './admin';
 import SuperAdmin from './superadmin';
+import StudentDashboard from './student';
+import ProfessorDashboard from './professor';
 
 
 export default function DashboardClient() {
@@ -42,11 +42,12 @@ export default function DashboardClient() {
         return null; // or handle redirection here if needed
     }
     if (session.user?.role === 'student') {
-        return <Student />;
+        return <StudentDashboard />
     }
 
     else if (session.user?.role === 'professor') {
-        return <Professor />;
+        // return <>hello</>
+        return <ProfessorDashboard />;
     }
     else if (session.user?.role === 'admin') {
         return <Admin />

@@ -1,7 +1,7 @@
 // app/api/user/route.ts
 
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma'; // Ensure prisma is properly configured for server-side use
+import prisma from '@/lib/prisma';
 import { User } from '@/types';
 
 export async function GET(request: Request) {

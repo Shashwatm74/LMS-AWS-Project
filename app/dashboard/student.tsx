@@ -1,23 +1,103 @@
 'use client';
+
 import React from 'react';
-import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Book, Calendar, FileText, HelpCircle, Info, Library, Newspaper, User } from 'lucide-react';
 
-const Student: React.FC = () => {
+const StudentDashboard: React.FC = () => {
     const router = useRouter();
     const { data: session } = useSession();
+
     const handleChangePassword = () => {
         router.push('/changepassword');
     };
-    if (session?.user.role !== 'student') {
-        return null
-    }
+
+
+    const menuItems = [
+        { title: 'Dashboard', icon: <User className="w-4 h-4" /> },
+        { title: 'Help & Support', icon: <HelpCircle className="w-4 h-4" /> },
+        { title: 'Blackboard', icon: <FileText className="w-4 h-4" /> },
+        { title: 'News', icon: <Newspaper className="w-4 h-4" /> },
+        { title: 'Library', icon: <Library className="w-4 h-4" /> },
+        { title: 'Exams', icon: <Book className="w-4 h-4" /> },
+        { title: 'My Info', icon: <Info className="w-4 h-4" /> },
+    ];
+
+    const rightMenuItems = [
+        'Building Opening & IT Resources',
+        'Accommodation',
+        'IT Services',
+        'PG Study',
+        'Finance',
+        'Student Rep Help',
+    ];
+
     return (
-        <section className='mt-24'>
-            <h1>Welcome, {session?.user?.regNumber}</h1>
-            <Button onClick={() => handleChangePassword()} className='rounded-none bg-barn_red hover:bg-red-900'> Change Password</Button>
-        </section>
-    )
-}
-export default Student;
+        <div className="container mx-auto py-8 pt-20">
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-2xl font-bold">Good Morning, {session?.user?.regNumber}</h1>
+                <Button onClick={handleChangePassword} className="bg-barn_red hover:bg-red-900 rounded-none">
+                    Change Password
+                </Button>
+            </div>
+
+            <div className="grid grid-cols-4 gap-4">
+                <div className="col-span-1">
+                    <Card className='rounded-none'>
+                        <CardHeader>Menu</CardHeader>
+                        <CardContent>
+                            <ul className="space-y-2">
+                                {menuItems.map((item, index) => (
+                                    <li key={index} className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-none">
+                                        {item.icon}
+                                        <span>{item.title}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </CardContent>
+                    </Card>
+                </div>
+
+                <div className="col-span-2">
+                    <Card className="h-full rounded-none">
+                        <CardHeader>Dashboard</CardHeader>
+                        <CardContent>
+                            {/* Add main dashboard content here */}
+                            <p>Welcome to your student dashboard. Here you can access all your important information and resources.</p>
+                        </CardContent>
+                    </Card>
+                </div>
+
+                <div className="col-span-1">
+                    <Card className='rounded-none h-full'>
+                        <CardHeader>Quick Links</CardHeader>
+                        <CardContent>
+                            <ul className="space-y-2">
+                                {rightMenuItems.map((item, index) => (
+                                    <li key={index} className="cursor-pointer hover:bg-gray-100 p-2 rounded-none">
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+
+            <Card className="mt-4 rounded-none">
+                <CardHeader className="flex items-center">
+                    <Calendar className="w-4 h-4 mr-2" />
+                    <span>Timetable</span>
+                </CardHeader>
+                <CardContent>
+                    <Button className="w-full rounded-none bg-barn_red hover:bg-red-900">View Full Timetable</Button>
+                </CardContent>
+            </Card>
+        </div>
+    );
+};
+
+export default StudentDashboard;

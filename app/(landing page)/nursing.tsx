@@ -12,7 +12,7 @@ interface CourseCardProps {
 
 const CourseCard: React.FC<CourseCardProps> = ({ type, title, duration, qualification, imageSrc }) => (
     <Card className="flex flex-col rounded-none w-80 h-96 mb-4">
-        <div className="relative h-3/4 h-48 w-full">
+        <div className="relative h-3/4 w-full">
             <Image
                 src={imageSrc}
                 alt={title}
