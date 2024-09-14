@@ -70,7 +70,6 @@
 
   body {
     @apply bg-background text-foreground overflow-auto;
-    ;
   }
 
   html {

@@ -46,7 +46,6 @@ export default function DashboardClient() {
     }
 
     else if (session.user?.role === 'professor') {
-        // return <>hello</>
         return <ProfessorDashboard />;
     }
     else if (session.user?.role === 'admin') {
