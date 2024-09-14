@@ -21,7 +21,15 @@ const config = {
       fontFamily: {
         cinzel: ['Cinzel', 'serif'],
         roboto: ['Roboto', 'sans-serif'],
+        helvetica: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+      },
 
+      fontSize: {
+        'h1': ['24px', { lineHeight: '26.4px', fontWeight: '700' }],
+        'h3': ['14px', { lineHeight: '15.4px', fontWeight: '700' }],
+        'p': ['14px', { lineHeight: '20px', fontWeight: '400' }],
+        'blockquote': ['21px', { lineHeight: '30px', fontWeight: '400' }],
+        'pre': ['13px', { lineHeight: '18.5714px', fontWeight: '400' }],
       },
 
       colors: {
