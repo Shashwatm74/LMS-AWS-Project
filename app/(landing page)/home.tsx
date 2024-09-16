@@ -2,7 +2,9 @@ import React from "react";
 import Image from "next/image";
 import hometxt from "@/public/images/hometext.svg"
 import { Button } from "@/components/ui/button";
+
 const Home: React.FC = () => {
+
     return (
         <section id="home" className="flex min-h-fit flex-col items-center px-14 pt-32 pb-14">
             <Image src='' alt='landing image' className="h-96  w-11/12 max-w-screen-2xl  mb-10 " />
@@ -15,8 +17,9 @@ const Home: React.FC = () => {
                         encouraging the upcoming young generation and started developing the new strength in the upcoming nation builders.
                     </i>
                 </p>
-
-                <Button className="rounded-none w-40 h-11 bg-barn_red font-helvetica size-blockquote hover:bg-charcoal mt-4" >ABOUT US</Button>
+                <a href="/about">
+                    <Button className="rounded-none w-40 h-11 bg-barn_red font-helvetica size-blockquote hover:bg-charcoal mt-4" >ABOUT US</Button>
+                </a>
             </div>
         </section>
     )
