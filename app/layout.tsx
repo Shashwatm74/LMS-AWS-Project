@@ -6,6 +6,7 @@ import Navbar from "@/components/navbar";
 import "./globals.css";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Footer from '@/components/(footer)/footer';
 
 
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Navbar />
           </Suspense>
           {children}
+          <Footer />
         </SessionProvider>
         <ToastContainer position="top-right" autoClose={3000} />
       </body>

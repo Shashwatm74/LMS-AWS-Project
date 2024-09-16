@@ -1,12 +1,12 @@
 'use client';
 
-import Footer from "@/components/footer";
+
 import About from "./(landing page)/about";
 import Nursing from "./(landing page)/nursing";
 import Paramedic from "./(landing page)/paramedic";
 import Founder from "./(landing page)/founder";
 import Home from "./(landing page)/home";
-import Contact from "./(landing page)/contact";
+import Contact from "../components/(footer)/contact";
 
 export default function Landing() {
 
@@ -18,7 +18,7 @@ export default function Landing() {
       <Paramedic />
       <Founder />
       <Contact />
-      <Footer />
+
     </>
   );
 }
