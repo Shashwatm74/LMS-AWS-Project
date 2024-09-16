@@ -14,7 +14,7 @@ const About: React.FC = () => {
                 </p>
                 <p className="text-lg pt-2">WE PROVIDE THE BEST NURSING AND PARAMEDICAL COURSES</p>
                 <div className="py-8 ">
-                    <Button className=" w-40 rounded-none text-barn_red bg-white hover:bg-gray-300">VIEW COURSES</Button>
+                    <Button className=" w-40 rounded-none text-barn_red bg-white hover:text-white hover:bg-charcoal">VIEW COURSES</Button>
                 </div>
             </div>
             <div className="w-1/2">
