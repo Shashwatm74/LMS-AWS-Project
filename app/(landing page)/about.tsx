@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 const About: React.FC = () => {
     return (
-        <section id="about" className="min-h-fit flex flex-row bg-barn_red p-10 py-12 text-white">
+        <section id="about" className="min-h-fit flex flex-row bg-barn_red p-10 py-7 text-white">
             <div className="w-1/2 flex flex-col">
                 <h1 className="font-bold font-cinzel text-3xl py-6">TRUSTED BY 10,000+ STUDENTS</h1>
                 <p className="mt-4 text-lg w-3/4 pb-6">
