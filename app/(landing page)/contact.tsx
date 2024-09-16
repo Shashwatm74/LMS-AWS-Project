@@ -8,14 +8,15 @@ import insta from "@/public/images/insta.svg"
 
 const Contact: React.FC = () => {
     return (
-        <section id="about" className="min-h-fit flex flex-col md:flex-row bg-ivory pt-12 px-16 text-white">
+        <section id="about" className="min-h-fit flex flex-col md:flex-row bg-ivory pt-12 px-16 text-white font-helvetica ">
             <div className="w-full md:w-1/2 mb-8 md:mb-0">
                 <div className="flex justify-center md:justify-start">
                     <Image src={redLogo} alt='about-page-image' className="w-96" />
                 </div>
             </div>
-            <div className="w-full md:w-1/2 flex flex-row text-black">
-                <div className="flex flex-col w-full md:w-1/2 text-sm mb-8 md:mb-4">
+
+            <div className="w-full md:w-1/2 flex flex-row text-black ">
+                <div className="flex flex-col w-full md:w-1/2 text-sm mb-8 md:mb-4 md:pl-24 md:pt-2  ">
                     <h2 className="text-barn_red font-semibold mb-4">
                         QUICK LINKS
                     </h2>

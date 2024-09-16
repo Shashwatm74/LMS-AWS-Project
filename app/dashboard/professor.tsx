@@ -39,7 +39,7 @@ const ProfessorDashboard: React.FC = () => {
         <div className="container mx-auto py-8 pt-20">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold capitalize">Good Morning, {session?.user?.regNumber}</h1>
-                <Button onClick={handleChangePassword} className="bg-barn_red hover:bg-red-900 rounded-none">
+                <Button onClick={handleChangePassword} className="bg-barn_red hover:bg-charcoal rounded-none">
                     Change Password
                 </Button>
             </div>
@@ -94,7 +94,7 @@ const ProfessorDashboard: React.FC = () => {
                     <span>Timetable</span>
                 </CardHeader>
                 <CardContent>
-                    <Button className="w-full rounded-none bg-barn_red hover:bg-red-900">View Full Timetable</Button>
+                    <Button className="w-full rounded-none bg-barn_red hover:bg-charcoal">View Full Timetable</Button>
                 </CardContent>
             </Card>
         </div >

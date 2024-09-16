@@ -169,7 +169,7 @@ export default function ForgotPassword() {
                             {message && (
                                 <p className={`text-center mb-4 ${message.includes('Error') ? 'text-red-500' : 'text-green-500'}`}>{message}</p>
                             )}
-                            <Button type="submit" className="w-full relative rounded-none bg-barn_red hover:bg-red-900" disabled={loading}>
+                            <Button type="submit" className="w-full relative rounded-none bg-barn_red hover:bg-charcoal" disabled={loading}>
                                 {loading && <Spinner />}
                                 {loading ? ' Processing...' : 'Send OTP'}
                             </Button>
@@ -192,7 +192,7 @@ export default function ForgotPassword() {
                             {message && (
                                 <p className={`text-center mb-4 ${message.includes('Error') ? 'text-red-500' : 'text-green-500'}`}>{message}</p>
                             )}
-                            <Button type="submit" className="w-full relative rounded-none bg-barn_red hover:bg-red-900" disabled={loading}>
+                            <Button type="submit" className="w-full relative rounded-none bg-barn_red hover:bg-charcoal" disabled={loading}>
                                 {loading && <Spinner />}
                                 {loading ? ' Processing...' : 'Verify OTP'}
                             </Button>
@@ -245,7 +245,7 @@ export default function ForgotPassword() {
                                 <p className={`text-center mb-4 ${message.includes('Error') ? 'text-red-500' : 'text-green-500'}`}>{message}</p>
                             )}
                             {showResetButton && (
-                                <Button type="submit" className="w-full relative rounded-none bg-barn_red hover:bg-red-900" disabled={loading}>
+                                <Button type="submit" className="w-full relative rounded-none bg-barn_red hover:bg-charcoal" disabled={loading}>
                                     {loading && <Spinner />}
                                     {loading ? ' Processing...' : 'Reset Password'}
                                 </Button>

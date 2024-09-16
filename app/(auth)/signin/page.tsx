@@ -87,7 +87,7 @@ export default function SignIn() {
                         {errorMessage && (
                             <p className="text-red-500 text-center mb-4">{errorMessage}</p>
                         )}
-                        <Button type="submit" className="w-full mb-4 rounded-none bg-barn_red hover:bg-red-900">
+                        <Button type="submit" className="w-full mb-4 rounded-none bg-barn_red hover:bg-charcoal">
                             Sign In
                         </Button>
                         <div className="text-center">

@@ -161,8 +161,8 @@ export default function ChangePassword() {
                         {/* Submit button */}
                         <div className='flex gap-1'>
 
-                            <Button type="submit" className="w-full mb-4 rounded-none bg-barn_red hover:bg-red-900">Change Password</Button>
-                            <Button onClick={() => handleBack()} className="w-full mb-4 rounded-none bg-barn_red hover:bg-red-900">Back</Button>
+                            <Button type="submit" className="w-full mb-4 rounded-none bg-barn_red hover:bg-charcoal">Change Password</Button>
+                            <Button onClick={() => handleBack()} className="w-full mb-4 rounded-none bg-barn_red hover:bg-charcoal">Back</Button>
                         </div>
                     </form>
                 </CardContent>
