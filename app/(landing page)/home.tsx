@@ -15,7 +15,8 @@ const Home: React.FC = () => {
                         encouraging the upcoming young generation and started developing the new strength in the upcoming nation builders.
                     </i>
                 </p>
-                <Button className="rounded-none w-40 h-11 bg-barn_red font-helvetica size-blockquote hover:bg-charcoal ">ABOUT US</Button>
+
+                <Button className="rounded-none w-40 h-11 bg-barn_red font-helvetica size-blockquote hover:bg-charcoal mt-4" >ABOUT US</Button>
             </div>
         </section>
     )
