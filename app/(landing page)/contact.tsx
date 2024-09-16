@@ -10,23 +10,24 @@ const Contact: React.FC = () => {
     return (
         <section id="about" className="min-h-fit flex flex-col md:flex-row bg-ivory pt-12 px-8 md:px-16 text-white font-helvetica ">
             <div className="w-full md:w-1/2 mb-8 md:mb-0">
-                <div className="flex justify-center md:justify-start">
+                <div className="flex justify-center md:justify-start lg:pl-20">
                     <Image src={redLogo} alt='about-page-image' className="w-96" />
                 </div>
             </div>
 
             <div className="w-full gap-4 md:gap-6 md:w-1/2 flex flex-row text-black ">
-                <div className="flex flex-col w-full md:w-1/2 text-sm mb-8 md:mb-4 pl-8 md:pl-20 md:pt-2 ">
+                <div className="flex flex-col w-full min-w-fit  text-sm mb-8 md:mb-4 px-2 md:pl-14 md:pt-2 lg:pl-40">
                     <h2 className="text-barn_red font-semibold mb-4">
                         QUICK LINKS
                     </h2>
                     <a className="block mb-2" href="">HOME</a>
+                    <a className="block mb-2" href="">FI GROUP</a>
                     <a className="block mb-2" href="">ABOUT US</a>
                     <a className="block mb-2" href="">COURSES</a>
                     <a className="block mb-2" href="">NOTICE</a>
                     <a className="block mb-2" href="">GALLERY</a>
                 </div>
-                <div className="flex flex-col w-full md:w-1/2 mb-8 md:mb-16">
+                <div className="flex flex-col w-full md:w-1/2 mb-8 md:mb-16 lg:pr-24">
                     <p className="mb-4">1223, Khand Dev, Banthra, Lucknow</p>
                     <h2 className="text-barn_red font-semibold mb-4">
                         CONTACT US:
