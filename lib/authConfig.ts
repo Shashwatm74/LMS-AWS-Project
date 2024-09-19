@@ -61,6 +61,7 @@ export const authOptions: NextAuthOptions = {
             if (user) {
                 token.role = user.role;
                 token.regNumber = user.regNumber;
+                token.id = user.id
             }
             return token;
         }

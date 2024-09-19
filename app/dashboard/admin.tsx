@@ -16,6 +16,7 @@ interface Notice {
     regNumber: string;
 }
 
+
 const AdminDashboard = () => {
     const router = useRouter();
     const { data: session } = useSession();
@@ -63,7 +64,7 @@ const AdminDashboard = () => {
                     title: editingNotice.title,
                     content: editingNotice.content,
                     regNumber: editingNotice.regNumber,
-                    adminId: session?.user.regNumber,
+                    adminId: session?.user.role,
                 }),
             });
 
@@ -87,12 +88,17 @@ const AdminDashboard = () => {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
+                    id: editingNotice.id,
                     title: editingNotice.title,
                     content: editingNotice.content,
                 }),
             });
 
-            if (!res.ok) throw new Error('Failed to update notice');
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(`Failed to update notice: ${errorData.error}`);
+            }
+
             setEditingNotice(null);
             fetchNotices();
         } catch (error) {
@@ -113,7 +119,7 @@ const AdminDashboard = () => {
             if (!response.ok) {
                 throw new Error('Failed to delete notice');
             }
-            fetchNotices(); // Refresh the notices after deletion
+            fetchNotices();
         } catch (error) {
             console.error(error);
         }
@@ -126,7 +132,7 @@ const AdminDashboard = () => {
     return (
         <div className="container mx-auto py-8 pt-20">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold capitalize">Good Morning, Admin {session?.user?.regNumber}</h1>
+                <h1 className="text-2xl font-bold capitalize">Good Morning,{session?.user?.regNumber}</h1>
                 <Button onClick={() => router.push('/changepassword')} className="bg-barn_red hover:bg-charcoal rounded-none">
                     Change Password
                 </Button>
@@ -167,23 +173,25 @@ const AdminDashboard = () => {
                             {activeMenu === 'Notices' ? (
                                 <div className="space-y-4">
                                     {editingNotice ? (
-                                        <div className="space-y-4">
-                                            <Input
-                                                placeholder="Notice Title"
-                                                value={editingNotice.title}
-                                                onChange={(e) => setEditingNotice({ ...editingNotice, title: e.target.value })}
-                                            />
-                                            <Textarea
-                                                placeholder="Notice Content"
-                                                value={editingNotice.content}
-                                                onChange={(e) => setEditingNotice({ ...editingNotice, content: e.target.value })}
-                                            />
-                                            <Button onClick={editingNotice.id === 0 ? handleAddNotice : handleUpdateNotice} className="bg-blue-500 hover:bg-blue-600">
-                                                {editingNotice.id === 0 ? 'Add Notice' : 'Update Notice'}
-                                            </Button>
-                                            <Button onClick={() => setEditingNotice(null)} className="bg-gray-500 hover:bg-gray-600 ml-2">
-                                                Cancel
-                                            </Button>
+                                        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+                                            <div className="bg-white p-4 rounded">
+                                                <h2 className="text-xl font-bold mb-4">Edit Notice</h2>
+                                                <Input
+                                                    value={editingNotice.title}
+                                                    onChange={(e) => setEditingNotice({ ...editingNotice, title: e.target.value })}
+                                                    placeholder="Notice Title"
+                                                />
+                                                <Textarea
+                                                    value={editingNotice.content}
+                                                    onChange={(e) => setEditingNotice({ ...editingNotice, content: e.target.value })}
+                                                    placeholder="Notice Content"
+                                                    className="mt-2"
+                                                />
+                                                <div className="mt-4 flex justify-end">
+                                                    <Button onClick={handleUpdateNotice} className="mr-2">Save</Button>
+                                                    <Button onClick={() => setEditingNotice(null)}>Cancel</Button>
+                                                </div>
+                                            </div>
                                         </div>
                                     ) : (
                                         <>
@@ -191,22 +199,27 @@ const AdminDashboard = () => {
                                                 <p>No notices available.</p>
                                             ) : (
                                                 notices.map((notice) => (
-                                                    <div key={notice.id} className="border p-4 rounded-md flex justify-between items-center">
-                                                        <div>
-                                                            <h3 className="font-bold">{notice.title}</h3>
+                                                    <Card key={notice.id} className="mb-4">
+                                                        <CardHeader>
+                                                            <h2>{notice.title}</h2>
+                                                            <div className="flex justify-between">
+                                                                <p>Posted by: {notice.admin.regNumber}</p>
+                                                                <div>
+                                                                    <Button onClick={() => setEditingNotice(notice)}>
+                                                                        <Edit className="w-4 h-4" />
+                                                                    </Button>
+                                                                    <Button onClick={() => handleDeleteNotice(notice.id)}>
+                                                                        <Trash2 className="w-4 h-4" />
+                                                                    </Button>
+                                                                </div>
+                                                            </div>
+                                                        </CardHeader>
+                                                        <CardContent>
                                                             <p>{notice.content}</p>
-                                                            <p className="text-sm text-gray-500">Created by: {notice.admin.regNumber}</p>
-                                                        </div>
-                                                        <div className="flex space-x-4">
-                                                            <Button onClick={() => setEditingNotice(notice)} className="bg-yellow-400 hover:bg-yellow-500">
-                                                                <Edit className="w-4 h-4" /> Edit
-                                                            </Button>
-                                                            <Button onClick={() => handleDeleteNotice(notice.id)} className="bg-red-500 hover:bg-red-600">
-                                                                <Trash2 className="w-4 h-4" /> Delete
-                                                            </Button>
-                                                        </div>
-                                                    </div>
+                                                        </CardContent>
+                                                    </Card>
                                                 ))
+
                                             )}
                                         </>
                                     )}
