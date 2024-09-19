@@ -11,6 +11,7 @@ const Home: React.FC = () => {
             <div className="flex flex-col gap-2 p-0 max-w-screen-2xl text-xl items-center text-center">
 
                 <Image src={hometxt} alt="home text" className="h-24" />
+
                 <p className="my-2 font-helvetica size-blockquote text-justify-center md:px-32">
                     <i>
                         Building a child is like building the Nation, F. I. College of Nursing was laid by Late Mr. Iqbal Ahmad sir, in his guidance F.I. College of Nursing
