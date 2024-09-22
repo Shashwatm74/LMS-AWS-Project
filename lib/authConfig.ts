@@ -47,6 +47,9 @@ export const authOptions: NextAuthOptions = {
                     id: user.id,
                     regNumber: user.regNumber,
                     role: user.role.name,
+                    name: user.name,
+                    email: user.email
+
                 } as CustomUser;
             }
         })
@@ -55,13 +58,18 @@ export const authOptions: NextAuthOptions = {
         async session({ session, token }: { session: Session; token: any }) {
             session.user.role = token.role;
             session.user.regNumber = token.regNumber;
+            session.user.id = token.id;
+            session.user.name = token.name;
+            session.user.email = token.email
             return session;
         },
         async jwt({ token, user }: { token: any; user: CustomUser | undefined }) {
             if (user) {
                 token.role = user.role;
                 token.regNumber = user.regNumber;
-                token.id = user.id
+                token.id = user.id;
+                token.name = user.name;
+                token.email = user.email
             }
             return token;
         }

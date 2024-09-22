@@ -24,7 +24,7 @@ const Contact: React.FC = () => {
                     <a className="block mb-2" href="">FI GROUP</a>
                     <a className="block mb-2" href="">ABOUT US</a>
                     <a className="block mb-2" href="">COURSES</a>
-                    <a className="block mb-2" href="">NOTICE</a>
+                    <a className="block mb-2" href="/notices">NOTICE</a>
                     <a className="block mb-2" href="">GALLERY</a>
                 </div>
                 <div className="flex flex-col w-full md:w-1/2 mb-8 md:mb-16 lg:pr-24">

@@ -1,8 +1,10 @@
 'use client';
-
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { Card, CardHeader, CardContent } from '@/components/ui/card';
-import { FileText } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import noticeRed from '@/public/images/noticeRed.svg';
+import noticeWhite from '@/public/images/noticeWhite.svg'
+import Contact from '@/components/(footer)/contact';
 
 interface Notice {
     id: number;
@@ -24,30 +26,46 @@ const ViewerDashboard: React.FC = () => {
     }, []);
 
     return (
-        <div className="container mx-auto py-8 pt-20">
-            <h1 className="text-2xl font-bold capitalize mb-6">Public Notices</h1>
+        <>
+            <section className="container mx-auto py-8 pt-20 min-h-screen">
+                <h1 className="text-3xl pt-14 pb-4 text-center font-bold mb-6 text-barn_red font-cinzel">IMPORTANT NOTICES</h1>
 
-            <Card className="h-full rounded-none">
-                <CardHeader>
-                    <FileText className="w-4 h-4 mr-2" />
-                    <span>Notices</span>
-                </CardHeader>
-                <CardContent>
-                    {notices.length === 0 ? (
-                        <p>No notices available</p>
-                    ) : (
-                        <div className="space-y-4">
-                            {notices.map((notice) => (
-                                <div key={notice.id} className="border p-4 rounded-md">
-                                    <h3 className="font-bold">{notice.title}</h3>
-                                    <p>{notice.content}</p>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
-        </div>
+                <Card className="h-full rounded-none border-none">
+
+                    <CardContent>
+                        {notices.length === 0 ? (
+                            <p>No notices available</p>
+                        ) : (
+
+
+                            <div className="space-y-6">
+                                {notices.map((notice, index) => (
+                                    <div key={notice.id} className={`rounded-md font-helvetica overflow-hidden ${index % 2 === 0 ? 'bg-ivory' : 'bg-charcoal'}`}>
+                                        <div className={`p-4 flex items-start ${index % 2 === 0 ? 'text-barn_red' : 'text-white'}`}>
+                                            <div className="flex-shrink-0 mr-4">
+                                                <Image
+                                                    className='h-24'
+                                                    src={index % 2 === 0 ? noticeRed : noticeWhite}
+                                                    alt="Notice background"
+                                                />
+                                            </div>
+                                            <div>
+                                                <h3 className="font-bold  text-lg mb-2">{notice.title.toLocaleUpperCase()}</h3>
+                                                <p className={`text-sm ${index % 2 === 0 ? 'text-charcoal' : 'text-white'}`}>
+                                                    {notice.content}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+            </section>
+            <Contact />
+        </>
     );
 };
 

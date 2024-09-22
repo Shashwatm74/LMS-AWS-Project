@@ -16,6 +16,7 @@ model Role {
 
 model User {
   id               String         @id @default(uuid())
+  name             String
   regNumber        String         @unique
   password         String
   email            String         @unique
@@ -25,9 +26,7 @@ model User {
   ClassStudent     ClassStudent[]
   resetToken       String?
   resetTokenExpiry DateTime?
-
-  otps    Otp[]
-  notices Notice[] // Relationship to notices
+  otps             Otp[]
 }
 
 model Class {
@@ -61,11 +60,9 @@ model Otp {
 
 model Notice {
   id        Int      @id @default(autoincrement())
-  regNumber String   @unique
   title     String
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  adminId   String
-  admin     User     @relation(fields: [adminId], references: [id])
+  userName  String
 }
