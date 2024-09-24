@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Book, Calendar, FileText, HelpCircle, Info, Library, User, Edit, Trash2, Plus } from 'lucide-react';
-import AdminNoticeBoard from '@/components/(dashboard)/AdminNoticeBoard';
+import AdminNoticeBoard from '@/components/(dashboard)/notice/AdminNoticeBoard';
 
 
 const SuperAdminDashboard: React.FC = () => {

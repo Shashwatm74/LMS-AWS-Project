@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Book, Calendar, FileText, HelpCircle, Info, Library, Newspaper, User } from 'lucide-react';
-import ViewerNoticeBoard from '@/components/(dashboard)/ViewerNoticeBoard';
+import ViewerNoticeBoard from '@/components/(dashboard)/notice/ViewerNoticeBoard';
 
 const ProfessorDashboard: React.FC = () => {
     const [activeMenu, setActiveMenu] = useState('Dashboard');

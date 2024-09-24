@@ -105,7 +105,8 @@ const AdminNoticeBoard: React.FC = () => {
                 <p>No notices available.</p>
             ) : (
                 notices.map((notice) => (
-                    <Card key={notice.id} className="mb-4 rounded-none">
+
+                    <Card key={notice.id} className="mb-4 rounded-none ">
                         <CardHeader>
                             <h2>{notice.title}</h2>
                             <div className="flex justify-between">
