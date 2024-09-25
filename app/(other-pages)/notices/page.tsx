@@ -14,13 +14,20 @@ interface Notice {
 
 const ViewerDashboard: React.FC = () => {
     const [notices, setNotices] = useState<Notice[]>([]);
-
+    const [error, setError] = useState<string | null>(null);
     // Fetch the notices from the backend
     useEffect(() => {
         const fetchNotices = async () => {
-            const response = await fetch('/api/notices');
-            const data = await response.json();
-            setNotices(data);
+            try {
+
+                const response = await fetch('/api/notices');
+                const data = await response.json();
+                setNotices(data);
+            }
+            catch (error) {
+                console.log(error)
+                setError('Error fetching notices check your internet connection');
+            }
         };
         fetchNotices();
     }, []);
@@ -33,34 +40,37 @@ const ViewerDashboard: React.FC = () => {
                 <Card className="h-full rounded-none border-none">
 
                     <CardContent>
-                        {notices.length === 0 ? (
-                            <p>No notices available</p>
-                        ) : (
+                        {error ? (
+                            <p className="text-red-500">Error: {error}</p>
+                        ) :
+                            notices.length === 0 ? (
+                                <p>No notices available</p>
+                            ) : (
 
 
-                            <div className="space-y-6">
-                                {notices.map((notice, index) => (
-                                    <div key={notice.id} className={`rounded-md font-helvetica overflow-hidden ${index % 2 === 0 ? 'bg-ivory' : 'bg-charcoal'}`}>
-                                        <div className={`p-4 flex items-start ${index % 2 === 0 ? 'text-barn_red' : 'text-white'}`}>
-                                            <div className="flex-shrink-0 mr-4">
-                                                <Image
-                                                    className='h-24'
-                                                    src={index % 2 === 0 ? noticeRed : noticeWhite}
-                                                    alt="Notice background"
-                                                />
-                                            </div>
-                                            <div>
-                                                <h3 className="font-bold  text-lg mb-2">{notice.title.toLocaleUpperCase()}</h3>
-                                                <p className={`text-sm ${index % 2 === 0 ? 'text-charcoal' : 'text-white'}`}>
-                                                    {notice.content}
-                                                </p>
+                                <div className="space-y-6">
+                                    {notices.map((notice, index) => (
+                                        <div key={notice.id} className={`rounded-md font-helvetica overflow-hidden ${index % 2 === 0 ? 'bg-ivory' : 'bg-charcoal'}`}>
+                                            <div className={`p-4 flex items-start ${index % 2 === 0 ? 'text-barn_red' : 'text-white'}`}>
+                                                <div className="flex-shrink-0 mr-4">
+                                                    <Image
+                                                        className='h-24'
+                                                        src={index % 2 === 0 ? noticeRed : noticeWhite}
+                                                        alt="Notice background"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <h3 className="font-bold  text-lg mb-2">{notice.title.toLocaleUpperCase()}</h3>
+                                                    <p className={`text-sm ${index % 2 === 0 ? 'text-charcoal' : 'text-white'}`}>
+                                                        {notice.content}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
 
-                            </div>
-                        )}
+                                </div>
+                            )}
                     </CardContent>
                 </Card>
             </section>

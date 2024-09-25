@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Edit, Trash2, Plus, Upload } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-import * as XLSX from 'xlsx';
+
 
 interface Book {
     id: number;
@@ -25,6 +25,7 @@ const LibraryManagement: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
     const [isUploading, setIsUploading] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
         fetchBooks();
@@ -93,48 +94,35 @@ const LibraryManagement: React.FC = () => {
         if (!file) return;
 
         setIsUploading(true);
-        setError(null);
 
         try {
-            const data = await readExcel(file);
-            await bulkAddOrUpdateBooks(data);
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await fetch('/api/books/bulk', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to upload file');
+            }
+
+            const result = await response.json();
+            console.log('Bulk upload result:', result);
             fetchBooks();
         } catch (error) {
-            setError('Error processing Excel file');
+            console.error('Upload error:', error);
         } finally {
             setIsUploading(false);
         }
     };
 
-    const readExcel = (file: File): Promise<Book[]> => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const data = e.target?.result;
-                const workbook = XLSX.read(data, { type: 'binary' });
-                const sheetName = workbook.SheetNames[0];
-                const sheet = workbook.Sheets[sheetName];
-                const parsedData = XLSX.utils.sheet_to_json(sheet);
-                resolve(parsedData as Book[]);
-            };
-            reader.onerror = (error) => reject(error);
-            reader.readAsBinaryString(file);
-        });
-    };
-
-    const bulkAddOrUpdateBooks = async (books: Book[]) => {
-        try {
-            const response = await fetch('/api/books/bulk', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(books),
-            });
-            if (!response.ok) throw new Error('Failed to bulk add/update books');
-        } catch (error) {
-            throw new Error('Error in bulk add/update operation');
+    const triggerFileInput = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click(); // Programmatically trigger the input file dialog
         }
     };
-
     return (
         <div className="space-y-4">
             <div className="flex justify-between items-center">
@@ -144,16 +132,16 @@ const LibraryManagement: React.FC = () => {
                 <div className="flex items-center">
                     <input
                         type="file"
-                        id="excel-upload"
+                        ref={fileInputRef}
                         accept=".xlsx, .xls"
                         onChange={handleFileUpload}
-                        className="hidden"
+                        style={{ display: 'none' }}
                     />
-                    <label htmlFor="excel-upload" className="cursor-pointer">
-                        <Button disabled={isUploading} className="rounded-none bg-barn_red hover:bg-charcoal">
-                            <Upload className="w-4 h-4 mr-2" /> {isUploading ? 'Uploading...' : 'Bulk Import'}
-                        </Button>
-                    </label>
+                    <Button onClick={triggerFileInput} disabled={isUploading} className="rounded-none bg-barn_red hover:bg-charcoal">
+                        <Upload className="w-4 h-4 mr-2" />
+                        {isUploading ? 'Uploading...' : 'Bulk Import'}
+                    </Button>
+
                 </div>
             </div>
             {editingBook && (
