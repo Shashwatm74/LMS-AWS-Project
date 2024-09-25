@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Edit, Trash2, Plus, Upload } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-
+import * as XLSX from 'xlsx';
 
 interface Book {
     id: number;
@@ -89,40 +88,100 @@ const LibraryManagement: React.FC = () => {
         }
     };
 
-    const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (!file) return;
+    // const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
 
-        setIsUploading(true);
+    //     const file = event.target.files?.[0];
+
+    //     if (!file) return;
+
+    //     setIsUploading(true);
+
+    //     try {
+    //         const formData = new FormData();
+    //         formData.append('file', file);
+
+    //         const response = await fetch('/api/books/bulk', {
+    //             method: 'POST',
+    //             body: formData,
+    //         });
+
+    //         if (!response.ok) {
+    //             throw new Error('Failed to upload file');
+    //         }
+
+    //         const result = await response.json();
+    //         console.log('Bulk upload result:', result);
+    //         fetchBooks();
+    //     } catch (error) {
+    //         console.error('Upload error:', error);
+    //         setError('Error uploading file');
+    //     } finally {
+    //         setIsUploading(false);
+    //     }
+    // };
+    const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0]; // Get the uploaded file
+
+        if (!file) return; // Exit if no file is uploaded
+
+        setIsUploading(true); // Set the uploading state to true
 
         try {
-            const formData = new FormData();
-            formData.append('file', file);
+            // Parse the Excel file using XLSX
+            const data = await file.arrayBuffer(); // Read file as ArrayBuffer
+            const workbook = XLSX.read(data, { type: 'array' }); // Parse the Excel data
 
+            // Assuming the data is in the first sheet
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+
+            // Convert the sheet data to JSON format with the specific headers
+            const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+            // Filter out rows where any of the required fields are missing
+            const validRecords = jsonData.filter((record: any) =>
+                record.year && record.noOfCopies && record.edition && record.category && record.title && record.author
+            );
+
+            if (validRecords.length === 0) {
+                throw new Error('No valid records to upload');
+            }
+
+            // Send the parsed and filtered records to the backend API as JSON
             const response = await fetch('/api/books/bulk', {
                 method: 'POST',
-                body: formData,
+                headers: {
+                    'Content-Type': 'application/json', // Specify content type
+                },
+                body: JSON.stringify(validRecords), // Send the valid records as JSON
             });
 
             if (!response.ok) {
-                throw new Error('Failed to upload file');
+                throw new Error('Failed to upload data');
+            } else {
+                fetchBooks()
             }
 
-            const result = await response.json();
-            console.log('Bulk upload result:', result);
-            fetchBooks();
+            // const result = await response.json();
+            // console.log('Bulk upload result:', result);
+
+
         } catch (error) {
             console.error('Upload error:', error);
+            setError('Error uploading file: ' + error); // Set error message
         } finally {
-            setIsUploading(false);
+            setIsUploading(false); // Set the uploading state to false
         }
     };
-
     const triggerFileInput = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click(); // Programmatically trigger the input file dialog
         }
     };
+
+
+
+
     return (
         <div className="space-y-4">
             <div className="flex justify-between items-center">
