@@ -30,6 +30,26 @@ const ViewerLibrary: React.FC = () => {
         setBooks(filteredBooks);
     };
 
+    const handleBorrowBook = async (id: number) => {
+        try {
+            const response = await fetch('/api/books/borrow', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id }),
+            });
+            if (response.ok) {
+                const updatedBook = await response.json();
+                setBooks((prevBooks) =>
+                    prevBooks.map((book) => (book.id === id ? updatedBook : book))
+                );
+            }
+        } catch (error) {
+            console.error('Error borrowing book:', error);
+        }
+    };
+
     return (
         <div className="container mx-auto py-8 min-h-screen ">
             <h1 className="text-3xl text-center font-bold mb-6">Library Books</h1>
@@ -54,7 +74,6 @@ const ViewerLibrary: React.FC = () => {
                 <p>No books available</p>
             ) : (
                 <div className='overflow-x-auto'>
-
                     <table className="min-w-full bg-white ">
                         <thead className='bg-gray-100'>
                             <tr>
@@ -65,6 +84,7 @@ const ViewerLibrary: React.FC = () => {
                                 <th className="border border-gray-300 px-4 py-2">Edition</th>
                                 <th className="border border-gray-300 px-4 py-2">Category</th>
                                 <th className="border border-gray-300 px-4 py-2">Status</th>
+                                <th className="border border-gray-300 px-4 py-2">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,6 +97,15 @@ const ViewerLibrary: React.FC = () => {
                                     <td className="border border-gray-300 px-4 py-2">{book.edition}</td>
                                     <td className="border border-gray-300 px-4 py-2">{book.category}</td>
                                     <td className="border border-gray-300 px-4 py-2">{book.isAvailable ? 'Available' : 'Not Available'}</td>
+                                    <td className="border border-gray-300 px-4 py-2">
+                                        <button
+                                            onClick={() => handleBorrowBook(book.id)}
+                                            disabled={book.noOfCopies === 0}
+                                            className={`px-4 py-2 rounded ${book.noOfCopies === 0 ? 'bg-gray-300 cursor-not-allowed' : 'rounded- bg-barn_red hover:bg-charcoal text-white'}`}
+                                        >
+                                            {book.noOfCopies === 0 ? 'Out of Stock' : 'Borrow'}
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

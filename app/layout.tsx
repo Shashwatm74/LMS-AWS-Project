@@ -6,7 +6,6 @@ import Navbar from "@/components/navbar";
 import "./globals.css";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Footer from '@/components/(footer)/footer';
 
 
 
@@ -14,7 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <title>FI COLLEGE</title>
+        <title>LIBRARY MANAGEMENT</title>
         <meta name="description" content={'this is a college website'} />
         {/* You can add more meta tags or link tags here if needed */}
       </head>
@@ -24,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Navbar />
           </Suspense>
           {children}
-          <Footer />
+
         </SessionProvider>
         <ToastContainer position="top-right" autoClose={3000} />
       </body>

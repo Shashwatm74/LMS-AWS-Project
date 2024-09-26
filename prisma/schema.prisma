@@ -15,35 +15,16 @@ model Role {
 }
 
 model User {
-  id               String         @id @default(uuid())
+  id               String    @id @default(uuid())
   name             String
-  regNumber        String         @unique
+  regNumber        String    @unique
   password         String
-  email            String         @unique
+  email            String    @unique
   roleId           Int
-  role             Role           @relation(fields: [roleId], references: [id])
-  Class            Class[]
-  ClassStudent     ClassStudent[]
+  role             Role      @relation(fields: [roleId], references: [id])
   resetToken       String?
   resetTokenExpiry DateTime?
   otps             Otp[]
-}
-
-model Class {
-  id          Int            @id @default(autoincrement())
-  name        String
-  professorId String
-  professor   User           @relation(fields: [professorId], references: [id])
-  students    ClassStudent[]
-}
-
-model ClassStudent {
-  classId   Int
-  class     Class  @relation(fields: [classId], references: [id])
-  studentId String
-  student   User   @relation(fields: [studentId], references: [id])
-
-  @@id([classId, studentId])
 }
 
 model Otp {
@@ -78,4 +59,5 @@ model Book {
   isAvailable Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  borrow      Int
 }

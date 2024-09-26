@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import noticeRed from '@/public/images/noticeRed.svg';
 import noticeWhite from '@/public/images/noticeWhite.svg'
 import Contact from '@/components/(footer)/contact';
+import Footer from '../(footer)/footer';
 
 interface Notice {
     id: number;
@@ -74,7 +75,8 @@ const ViewerDashboard: React.FC = () => {
                     </CardContent>
                 </Card>
             </section>
-            <Contact />
+            <Footer />
+
         </>
     );
 };

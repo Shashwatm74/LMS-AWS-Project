@@ -17,7 +17,7 @@ interface Book {
     isAvailable: boolean;
 }
 
-const LibraryManagement: React.FC = () => {
+const AdminLibrary: React.FC = () => {
     const { data: session } = useSession();
     const [books, setBooks] = useState<Book[]>([]);
     const [editingBook, setEditingBook] = useState<Book | null>(null);
@@ -88,39 +88,8 @@ const LibraryManagement: React.FC = () => {
         }
     };
 
-    // const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-
-    //     const file = event.target.files?.[0];
-
-    //     if (!file) return;
-
-    //     setIsUploading(true);
-
-    //     try {
-    //         const formData = new FormData();
-    //         formData.append('file', file);
-
-    //         const response = await fetch('/api/books/bulk', {
-    //             method: 'POST',
-    //             body: formData,
-    //         });
-
-    //         if (!response.ok) {
-    //             throw new Error('Failed to upload file');
-    //         }
-
-    //         const result = await response.json();
-    //         console.log('Bulk upload result:', result);
-    //         fetchBooks();
-    //     } catch (error) {
-    //         console.error('Upload error:', error);
-    //         setError('Error uploading file');
-    //     } finally {
-    //         setIsUploading(false);
-    //     }
-    // };
     const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]; // Get the uploaded file
+        const file = event.target.files?.[0];
 
         if (!file) return; // Exit if no file is uploaded
 
@@ -140,7 +109,7 @@ const LibraryManagement: React.FC = () => {
 
             // Filter out rows where any of the required fields are missing
             const validRecords = jsonData.filter((record: any) =>
-                record.year && record.noOfCopies && record.edition && record.category && record.title && record.author
+                record.year && record.noOfCopies && record.edition && record.category && record.title && record.author && record.borrow
             );
 
             if (validRecords.length === 0) {
@@ -175,7 +144,7 @@ const LibraryManagement: React.FC = () => {
     };
     const triggerFileInput = () => {
         if (fileInputRef.current) {
-            fileInputRef.current.click(); // Programmatically trigger the input file dialog
+            fileInputRef.current.click();
         }
     };
 
@@ -270,8 +239,8 @@ const LibraryManagement: React.FC = () => {
                     <table className="min-w-full bg-white">
                         <thead className="bg-gray-100">
                             <tr>
-                                <th className="py-2 px-4 border-b">Title</th>
-                                <th className="py-2 px-4 border-b">Author</th>
+                                <th className="py-2 px-20 border-b" >Title   </th>
+                                <th className="py-2 px-8 border-b">Author</th>
                                 <th className="py-2 px-4 border-b">Year</th>
                                 <th className="py-2 px-4 border-b">Copies</th>
                                 <th className="py-2 px-4 border-b">Edition</th>
@@ -283,7 +252,7 @@ const LibraryManagement: React.FC = () => {
                         <tbody>
                             {books.map((book) => (
                                 <tr key={book.id}>
-                                    <td className="py-2 px-4 border-b">{book.title}</td>
+                                    <td className="py-2 px-4 border-b ">{book.title}</td>
                                     <td className="py-2 px-4 border-b">{book.author}</td>
                                     <td className="py-2 px-4 border-b">{book.year}</td>
                                     <td className="py-2 px-4 border-b">{book.noOfCopies}</td>
@@ -327,4 +296,4 @@ const LibraryManagement: React.FC = () => {
     );
 };
 
-export default LibraryManagement;
+export default AdminLibrary;
