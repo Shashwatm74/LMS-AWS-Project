@@ -52,7 +52,7 @@ const AdminDashboard: React.FC = () => {
                     </Card>
                 </div>
 
-                <div className="col-span-2 ">
+                <div className="col-span-3 ">
                     <Card className="h-full  rounded-none">
                         <CardHeader className="flex justify-between items-center">
                             <span>{activeMenu}</span>

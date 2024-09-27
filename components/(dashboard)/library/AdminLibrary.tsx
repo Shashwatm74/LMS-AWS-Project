@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-import { Edit, Trash2, Plus, Upload } from 'lucide-react';
+import { Edit, Trash2, Plus, Upload, Eye } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import * as XLSX from 'xlsx';
 
@@ -16,7 +16,19 @@ interface Book {
     category: string;
     isAvailable: boolean;
 }
-
+interface LentBook {
+    id: number;
+    bookId: number;
+    regNumber: string;
+    issuedOn: string;
+    returnDate: string;
+    bookTitle: string;
+    book: Book;
+    borrowerName: string;
+    User: {
+        name: string;
+    };
+}
 const AdminLibrary: React.FC = () => {
     const { data: session } = useSession();
     const [books, setBooks] = useState<Book[]>([]);
@@ -25,9 +37,12 @@ const AdminLibrary: React.FC = () => {
     const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
     const [isUploading, setIsUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [showLentBooks, setShowLentBooks] = useState(false);
+    const [lentBooks, setLentBooks] = useState<LentBook[]>([]);
 
     useEffect(() => {
         fetchBooks();
+        fetchLentBooks();
     }, []);
 
     const fetchBooks = async () => {
@@ -40,6 +55,112 @@ const AdminLibrary: React.FC = () => {
             setError('Error fetching books');
         }
     };
+    // Fetch lent books from the API
+    const fetchLentBooks = async () => {
+        try {
+            const response = await fetch('/api/books/lent');
+            if (!response.ok) throw new Error('Failed to fetch lent books');
+            const data = await response.json();
+            setLentBooks(data);
+        } catch (error) {
+            setError('Error fetching lent books');
+        }
+    };
+
+    const returnBook = async (lentId: number, bookId: number) => {
+        try {
+            const response = await fetch('/api/books/lent', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ lentId, bookId }),
+            });
+
+            if (!response.ok) throw new Error('Failed to return book');
+
+            // Refetch the books after returning one
+            fetchLentBooks();
+        } catch (error) {
+            setError('Error returning book');
+        }
+    };
+    const renderLentBooksTable = () => (
+        <div className="overflow-x-auto mt-4">
+            <h2 className="text-xl font-bold mb-2">Lent Books</h2>
+            {lentBooks.length === 0 ? (
+                <p>No lent books found.</p>
+            ) : (
+                <table className="min-w-full bg-white">
+                    <thead className="bg-gray-100">
+                        <tr>
+                            <th className="py-2 px-4 border-b">Book Title</th>
+                            <th className="py-2 px-4 border-b">Borrowed By</th>
+                            <th className="py-2 px-4 border-b">Issued On</th>
+                            <th className="py-2 px-4 border-b">Return Date</th>
+                            <th className="py-2 px-4 border-b">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {lentBooks.map((lentBook) => (
+                            <tr key={lentBook.id}>
+                                <td className="py-2 px-4 border-b">{lentBook.bookTitle}</td>
+                                <td className="py-2 px-4 border-b">{lentBook.borrowerName}</td>
+                                <td className="py-2 px-4 border-b">
+                                    {new Date(lentBook.issuedOn).toLocaleDateString()}
+                                </td>
+                                <td className="py-2 px-4 border-b">
+                                    {new Date(lentBook.returnDate).toLocaleDateString()}
+                                </td>
+                                <td className="py-2 px-4 border-b">
+                                    <button
+                                        onClick={() => returnBook(lentBook.id, lentBook.bookId)}
+                                        className="rounded-none bg-barn_red hover:bg-charcoal text-white  py-1"
+                                    >
+                                        Return Book
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+        </div>
+    );
+    // const renderLentBooksTable = () => (
+    //     <div className="overflow-x-auto mt-4">
+    //         <h2 className="text-xl font-bold mb-2">Lent Books</h2>
+    //         {lentBooks.length === 0 ? (
+    //             <p>No lent books found.</p>
+    //         ) : (
+    //             <table className="min-w-full bg-white">
+    //                 <thead className="bg-gray-100">
+    //                     <tr>
+    //                         <th className="py-2 px-4 border-b">Book Title</th>
+    //                         <th className="py-2 px-4 border-b">Borrowed By</th>
+    //                         <th className="py-2 px-4 border-b">Issued On</th>
+    //                         <th className="py-2 px-4 border-b">Return Date</th>
+    //                     </tr>
+    //                 </thead>
+    //                 <tbody>
+    //                     {lentBooks.map((lentBook) => (
+    //                         <tr key={lentBook.id}>
+    //                             <td className="py-2 px-4 border-b">{lentBook.bookTitle}</td>
+    //                             <td className="py-2 px-4 border-b">{lentBook.borrowerName}</td>
+    //                             <td className="py-2 px-4 border-b">
+    //                                 {new Date(lentBook.issuedOn).toLocaleDateString()}
+    //                             </td>
+    //                             <td className="py-2 px-4 border-b">
+    //                                 {new Date(lentBook.returnDate).toLocaleDateString()}
+    //                             </td>
+    //                         </tr>
+    //                     ))}
+    //                 </tbody>
+    //             </table>
+    //         )}
+    //     </div>
+    // );
+
 
     const handleAddOrUpdateBook = async () => {
         if (!editingBook) return;
@@ -72,6 +193,7 @@ const AdminLibrary: React.FC = () => {
         } catch (error) {
             setError('Error deleting book');
         }
+        fetchBooks()
     };
 
     const handleToggleAvailability = async (id: number, currentAvailability: boolean) => {
@@ -169,6 +291,10 @@ const AdminLibrary: React.FC = () => {
                         <Upload className="w-4 h-4 mr-2" />
                         {isUploading ? 'Uploading...' : 'Bulk Import'}
                     </Button>
+                    <Button onClick={() => setShowLentBooks(!showLentBooks)} className="rounded-none bg-barn_red hover:bg-charcoal">
+                        <Eye className="w-4 h-4 mr-2" />
+                        {showLentBooks ? 'Hide Lent Books' : 'Show Lent Books'}
+                    </Button>
 
                 </div>
             </div>
@@ -235,7 +361,7 @@ const AdminLibrary: React.FC = () => {
             {books.length === 0 ? (
                 <p>No books available.</p>
             ) : (
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto ">
                     <table className="min-w-full bg-white">
                         <thead className="bg-gray-100">
                             <tr>
@@ -292,6 +418,7 @@ const AdminLibrary: React.FC = () => {
                     </table>
                 </div>
             )}
+            {showLentBooks && renderLentBooksTable()}
         </div>
     );
 };

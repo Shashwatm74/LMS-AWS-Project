@@ -25,6 +25,7 @@ model User {
   resetToken       String?
   resetTokenExpiry DateTime?
   otps             Otp[]
+  lent             Lent[]
 }
 
 model Otp {
@@ -59,5 +60,16 @@ model Book {
   isAvailable Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  borrow      Int
+
+  lent Lent[]
+}
+
+model Lent {
+  id         Int      @id @default(autoincrement())
+  bookId     Int
+  regNumber  String
+  issuedOn   DateTime @default(now())
+  returnDate DateTime
+  book       Book     @relation(fields: [bookId], references: [id])
+  User       User     @relation(fields: [regNumber], references: [regNumber])
 }

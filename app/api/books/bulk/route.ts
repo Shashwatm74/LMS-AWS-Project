@@ -18,7 +18,6 @@ export async function POST(req: NextRequest) {
             category: book.category,
             title: book.title,
             author: book.author,
-            borrow: book.borrow
         }));
 
         // Insert the records into the database using Prisma
