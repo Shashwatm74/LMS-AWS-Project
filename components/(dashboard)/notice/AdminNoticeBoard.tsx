@@ -104,7 +104,7 @@ const AdminNoticeBoard: React.FC = () => {
             ) : notices.length === 0 ? (
                 <p>No notices available.</p>
             ) : (
-                notices.map((notice) => (
+                notices?.map((notice) => (
 
                     <Card key={notice.id} className="mb-4 rounded-none ">
                         <CardHeader>

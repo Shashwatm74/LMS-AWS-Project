@@ -14,8 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <title>LIBRARY MANAGEMENT</title>
-        <meta name="description" content={'this is a college website'} />
-        {/* You can add more meta tags or link tags here if needed */}
+        <meta name="description" content={'this is a library management system'} />
       </head>
       <body>
         <SessionProvider>

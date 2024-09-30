@@ -18,7 +18,7 @@ export async function GET() {
             },
         });
 
-        const formattedLentBooks = lentBooks.map(lentBook => ({
+        const formattedLentBooks = lentBooks?.map(lentBook => ({
             id: lentBook.id,
             bookId: lentBook.bookId,
             bookTitle: lentBook.book.title,

@@ -50,7 +50,7 @@ const ViewerDashboard: React.FC = () => {
 
 
                                 <div className="space-y-6">
-                                    {notices.map((notice, index) => (
+                                    {notices?.map((notice, index) => (
                                         <div key={notice.id} className={`rounded-md font-helvetica overflow-hidden ${index % 2 === 0 ? 'bg-ivory' : 'bg-charcoal'}`}>
                                             <div className={`p-4 flex items-start ${index % 2 === 0 ? 'text-barn_red' : 'text-white'}`}>
                                                 <div className="flex-shrink-0 mr-4">

@@ -102,7 +102,7 @@ const AdminLibrary: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {lentBooks.map((lentBook) => (
+                        {lentBooks?.map((lentBook) => (
                             <tr key={lentBook.id}>
                                 <td className="py-2 px-4 border-b">{lentBook.bookTitle}</td>
                                 <td className="py-2 px-4 border-b">{lentBook.borrowerName}</td>
@@ -143,7 +143,7 @@ const AdminLibrary: React.FC = () => {
     //                     </tr>
     //                 </thead>
     //                 <tbody>
-    //                     {lentBooks.map((lentBook) => (
+    //                     {lentBooks?.map((lentBook) => (
     //                         <tr key={lentBook.id}>
     //                             <td className="py-2 px-4 border-b">{lentBook.bookTitle}</td>
     //                             <td className="py-2 px-4 border-b">{lentBook.borrowerName}</td>
@@ -376,7 +376,7 @@ const AdminLibrary: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {books.map((book) => (
+                            {books?.map((book) => (
                                 <tr key={book.id}>
                                     <td className="py-2 px-4 border-b ">{book.title}</td>
                                     <td className="py-2 px-4 border-b">{book.author}</td>
