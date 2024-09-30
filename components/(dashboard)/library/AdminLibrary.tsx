@@ -59,7 +59,7 @@ const AdminLibrary: React.FC = () => {
     const fetchLentBooks = async () => {
         try {
             const response = await fetch('/api/books/lent');
-            if (!response.ok) throw new Error('Failed to fetch lent books');
+
             const data = await response.json();
             setLentBooks(data);
         } catch (error) {
@@ -127,40 +127,6 @@ const AdminLibrary: React.FC = () => {
             )}
         </div>
     );
-    // const renderLentBooksTable = () => (
-    //     <div className="overflow-x-auto mt-4">
-    //         <h2 className="text-xl font-bold mb-2">Lent Books</h2>
-    //         {lentBooks.length === 0 ? (
-    //             <p>No lent books found.</p>
-    //         ) : (
-    //             <table className="min-w-full bg-white">
-    //                 <thead className="bg-gray-100">
-    //                     <tr>
-    //                         <th className="py-2 px-4 border-b">Book Title</th>
-    //                         <th className="py-2 px-4 border-b">Borrowed By</th>
-    //                         <th className="py-2 px-4 border-b">Issued On</th>
-    //                         <th className="py-2 px-4 border-b">Return Date</th>
-    //                     </tr>
-    //                 </thead>
-    //                 <tbody>
-    //                     {lentBooks?.map((lentBook) => (
-    //                         <tr key={lentBook.id}>
-    //                             <td className="py-2 px-4 border-b">{lentBook.bookTitle}</td>
-    //                             <td className="py-2 px-4 border-b">{lentBook.borrowerName}</td>
-    //                             <td className="py-2 px-4 border-b">
-    //                                 {new Date(lentBook.issuedOn).toLocaleDateString()}
-    //                             </td>
-    //                             <td className="py-2 px-4 border-b">
-    //                                 {new Date(lentBook.returnDate).toLocaleDateString()}
-    //                             </td>
-    //                         </tr>
-    //                     ))}
-    //                 </tbody>
-    //             </table>
-    //         )}
-    //     </div>
-    // );
-
 
     const handleAddOrUpdateBook = async () => {
         if (!editingBook) return;
@@ -279,7 +245,7 @@ const AdminLibrary: React.FC = () => {
                 <Button onClick={() => setEditingBook({ id: 0, title: '', author: '', year: new Date().getFullYear(), noOfCopies: 1, edition: '', category: '', isAvailable: true })} className="rounded-none bg-barn_red hover:bg-charcoal">
                     <Plus className="w-4 h-4 mr-2" /> Add New Book
                 </Button>
-                <div className="flex items-center">
+                <div className="flex items-center gap-2">
                     <input
                         type="file"
                         ref={fileInputRef}
@@ -361,64 +327,67 @@ const AdminLibrary: React.FC = () => {
             {books.length === 0 ? (
                 <p>No books available.</p>
             ) : (
-                <div className="overflow-x-auto ">
-                    <table className="min-w-full bg-white">
-                        <thead className="bg-gray-100">
-                            <tr>
-                                <th className="py-2 px-20 border-b" >Title   </th>
-                                <th className="py-2 px-8 border-b">Author</th>
-                                <th className="py-2 px-4 border-b">Year</th>
-                                <th className="py-2 px-4 border-b">Copies</th>
-                                <th className="py-2 px-4 border-b">Edition</th>
-                                <th className="py-2 px-4 border-b">Category</th>
-                                <th className="py-2 px-4 border-b">Available</th>
-                                <th className="py-2 px-4 border-b">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {books?.map((book) => (
-                                <tr key={book.id}>
-                                    <td className="py-2 px-4 border-b ">{book.title}</td>
-                                    <td className="py-2 px-4 border-b">{book.author}</td>
-                                    <td className="py-2 px-4 border-b">{book.year}</td>
-                                    <td className="py-2 px-4 border-b">{book.noOfCopies}</td>
-                                    <td className="py-2 px-4 border-b">{book.edition}</td>
-                                    <td className="py-2 px-4 border-b">{book.category}</td>
-                                    <td className="py-2 px-4 border-b">
-                                        <Switch
-                                            checked={book.isAvailable}
-                                            onCheckedChange={() => handleToggleAvailability(book.id, book.isAvailable)}
-                                            className='bg-barn_red '
-                                        />
-                                    </td>
-                                    <td className="py-2 px-4 border-b">
-                                        <div className="flex space-x-2">
-                                            <Button onClick={() => setEditingBook(book)} className='rounded-none bg-barn_red hover:bg-charcoal'>
-                                                <Edit className="w-4 h-4" />
-                                            </Button>
-                                            {confirmDeleteId === book.id ? (
-                                                <>
-                                                    <Button onClick={() => handleDeleteBook(book.id)} className="rounded-none bg-charcoal hover:bg-barn_red">
-                                                        Confirm
+                !showLentBooks ?
+                    (
+                        <div className="overflow-x-auto ">
+                            <table className="min-w-full bg-white">
+                                <thead className="bg-gray-100">
+                                    <tr>
+                                        <th className="py-2 px-20 border-b" >Title   </th>
+                                        <th className="py-2 px-8 border-b">Author</th>
+                                        <th className="py-2 px-4 border-b">Year</th>
+                                        <th className="py-2 px-4 border-b">Copies</th>
+                                        <th className="py-2 px-4 border-b">Edition</th>
+                                        <th className="py-2 px-4 border-b">Category</th>
+                                        <th className="py-2 px-4 border-b">Available</th>
+                                        <th className="py-2 px-4 border-b">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {books?.map((book) => (
+                                        <tr key={book.id}>
+                                            <td className="py-2 px-4 border-b ">{book.title}</td>
+                                            <td className="py-2 px-4 border-b">{book.author}</td>
+                                            <td className="py-2 px-4 border-b">{book.year}</td>
+                                            <td className="py-2 px-4 border-b">{book.noOfCopies}</td>
+                                            <td className="py-2 px-4 border-b">{book.edition}</td>
+                                            <td className="py-2 px-4 border-b">{book.category}</td>
+                                            <td className="py-2 px-4 border-b">
+                                                <Switch
+                                                    checked={book.isAvailable}
+                                                    onCheckedChange={() => handleToggleAvailability(book.id, book.isAvailable)}
+                                                    className='bg-barn_red '
+                                                />
+                                            </td>
+                                            <td className="py-2 px-4 border-b">
+                                                <div className="flex space-x-2">
+                                                    <Button onClick={() => setEditingBook(book)} className='rounded-none bg-barn_red hover:bg-charcoal'>
+                                                        <Edit className="w-4 h-4" />
                                                     </Button>
-                                                    <Button onClick={() => setConfirmDeleteId(null)} className="rounded-none bg-charcoal hover:bg-barn_red">
-                                                        Cancel
-                                                    </Button>
-                                                </>
-                                            ) : (
-                                                <Button onClick={() => setConfirmDeleteId(book.id)} className='rounded-none bg-barn_red hover:bg-charcoal'>
-                                                    <Trash2 className="w-4 h-4" />
-                                                </Button>
-                                            )}
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                                                    {confirmDeleteId === book.id ? (
+                                                        <>
+                                                            <Button onClick={() => handleDeleteBook(book.id)} className="rounded-none bg-charcoal hover:bg-barn_red">
+                                                                Confirm
+                                                            </Button>
+                                                            <Button onClick={() => setConfirmDeleteId(null)} className="rounded-none bg-charcoal hover:bg-barn_red">
+                                                                Cancel
+                                                            </Button>
+                                                        </>
+                                                    ) : (
+                                                        <Button onClick={() => setConfirmDeleteId(book.id)} className='rounded-none bg-barn_red hover:bg-charcoal'>
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </Button>
+                                                    )}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )
+                    : renderLentBooksTable()
             )}
-            {showLentBooks && renderLentBooksTable()}
         </div>
     );
 };

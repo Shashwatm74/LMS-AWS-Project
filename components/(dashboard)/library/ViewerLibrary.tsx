@@ -116,7 +116,7 @@ const ViewerLibrary: React.FC = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {borrowedBooks?.map((book) => (
+                                {borrowedBooks.map((book) => (
                                     <tr key={book.id}>
                                         <td className="border border-gray-300 px-4 py-2">{book.bookTitle}</td>
                                         <td className="border border-gray-300 px-4 py-2">{book.bookAuthor}</td>
@@ -156,11 +156,11 @@ const ViewerLibrary: React.FC = () => {
                                     <td className="border border-gray-300 px-4 py-2">{book.edition}</td>
                                     <td className="border border-gray-300 px-4 py-2">{book.category}</td>
                                     <td className="border border-gray-300 px-4 py-2">{book.isAvailable ? 'Available' : 'Not Available'}</td>
-                                    <td className="border border-gray-300 px-4 py-2">
+                                    <td className="border border-gray-300 px-4 py-2 text-center">
                                         <button
                                             onClick={() => handleBorrowBook(book.id)}
                                             disabled={!book.isAvailable}
-                                            className={`px-4 py-2 rounded ${!book.isAvailable ? 'bg-gray-300 cursor-not-allowed' : 'rounded- bg-barn_red hover:bg-charcoal text-white'}`}
+                                            className={`px-4 py-2 rounded-none  ${!book.isAvailable ? 'bg-gray-300 cursor-not-allowed' : 'rounded- bg-barn_red hover:bg-charcoal text-white rounded-none'}`}
                                         >
                                             {book.isAvailable ? 'Borrow' : 'Not Available'}
                                         </button>
