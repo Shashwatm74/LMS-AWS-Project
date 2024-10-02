@@ -23,7 +23,7 @@ export async function GET() {
         return new Response(JSON.stringify({ error: 'Error fetching books' }), { status: 500 });
     }
 }
-// export async function GET(req: Request) {
+
 //     try {
 //         const url = new URL(req.url);
 //         const category = url.searchParams.get('category');

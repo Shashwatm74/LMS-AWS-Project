@@ -197,7 +197,7 @@ const AdminLibrary: React.FC = () => {
 
             // Filter out rows where any of the required fields are missing
             const validRecords = jsonData.filter((record: any) =>
-                record.year && record.noOfCopies && record.edition && record.category && record.title && record.author && record.borrow
+                record.year && record.noOfCopies && record.edition && record.category && record.title && record.author
             );
 
             if (validRecords.length === 0) {
